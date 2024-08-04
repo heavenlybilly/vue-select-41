@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "~components/*": [
+        "src/components/*"
+      ],
+      "~helpers/*": [
+        "src/helpers/*"
+      ],
+      "~hooks/*": [
+        "src/hooks/*"
+      ],
+      "~i18n/*": [
+        "src/i18n/*"
+      ],
+      "~/*": [
+        "src/*"
+      ],
+      "~conf/*": [
+        "src/conf/*"
+      ],
+      "~styles/*": [
+        "src/styles/*"
+      ],
+      "~scss/*": [
+        "src/scss/*"
+      ]
+    },
+    "declaration": true,
+    "declarationDir": "dist",
+    "outDir": "dist",
+    "types": [
+      "node",
+      "vite/client"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "vue-select-182",
+  "version": "1.0.3",
+  "main": "dist/vue-select-182.umd.js",
+  "module": "dist/vue-select-182.es.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/node": "^22.1.0",
+    "@vitejs/plugin-vue2": "^2.3.1",
+    "prettier": "^3.3.3",
+    "sass": "^1.39.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.3.5",
+    "vite-plugin-dts": "^4.0.0-beta.2",
+    "vue-tsc": "^2.0.29"
+  },
+  "dependencies": {
+    "vue": "2.7"
+  }
+}
