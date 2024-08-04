@@ -4,9 +4,8 @@ import VsLabel from '@/components/VsLabel.vue'
 import VsOption from '@/components/VsOption.vue'
 import VsSearchInput from '@/components/VsSearchInput.vue'
 import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
-import { Ref, computed, ref, useSlots, watch } from 'vue'
-import { VsProps } from '@/conf/props'
-import { ISelectOption } from '@/types'
+import { PropType, Ref, computed, ref, useSlots, watch } from 'vue'
+import { IVueSelectOption, TVueSelectRemoteFunction, TVueSelectValue } from '@/types'
 import { useInput } from '@/hooks/input/useInput'
 import { useFocus } from '@/hooks/useFocus'
 import { useNativeSelect } from '@/hooks/useNativeSelect'
@@ -15,7 +14,82 @@ import { useWarnings } from '@/hooks/useWarnings'
 import debounce from '@/helpers/debounce'
 import i18n from '@/helpers/i18n'
 
-const props = defineProps(VsProps)
+const props = defineProps({
+  // todo
+  // clearable: {
+  //   type: Boolean,
+  //   default: false,
+  // },
+  closeOnSelect: {
+    type: Boolean,
+    default: false,
+  },
+  // todo
+  // disabled: {
+  //   type: Boolean,
+  //   default: false,
+  // },
+  label: {
+    type: String,
+    required: false,
+  },
+  // todo: options transform
+  // labelField: {
+  //   type: String,
+  //   default: 'value',
+  // },
+  multiple: {
+    type: Boolean,
+    default: false,
+  },
+  name: {
+    type: String,
+    required: false,
+  },
+  options: {
+    type: Array as PropType<IVueSelectOption[]>,
+    default: () => [],
+  },
+  placeholder: {
+    type: String,
+    required: false,
+  },
+  // todo + warnings
+  // perPage: {
+  //   type: Number,
+  //   default: 20,
+  // },
+  remote: {
+    type: Boolean,
+    default: false,
+  },
+  remoteFunction: {
+    type: Function as PropType<TVueSelectRemoteFunction>,
+    required: false,
+  },
+  required: {
+    type: Boolean,
+    default: false,
+  },
+  // todo: options transform
+  // valueField: {
+  //   type: String,
+  //   default: 'value',
+  // },
+  value: {
+    type: [Object, Array] as PropType<TVueSelectValue>,
+    required: false,
+  },
+  // todo
+  // hasPagination: {
+  //   type: Boolean,
+  //   default: false,
+  // },
+  selectedDisplayLimit: {
+    type: Number,
+    default: 3,
+  },
+})
 const emits = defineEmits(['input', 'dropdown:opened', 'dropdown:closed'])
 
 const nativeElement: Ref<HTMLSelectElement | null> = ref(null)
@@ -54,7 +128,7 @@ const focusChangeHandle = () => {
   setFocus(!focus.value)
 }
 
-const selectHandle = (option: ISelectOption) => {
+const selectHandle = (option: IVueSelectOption) => {
   const newValue = selectOption(props.value, option)
   emits('input', newValue)
 }

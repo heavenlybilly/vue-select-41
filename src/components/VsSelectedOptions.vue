@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { TValue } from '@/types'
+import { TVueSelectValue } from '@/types'
 import { PropType, computed } from 'vue'
 
 const props = defineProps({
   value: {
-    type: [Object, Array] as PropType<TValue | TValue[] | null>,
+    type: [Object, Array] as PropType<TVueSelectValue>,
     required: false,
   },
 })
@@ -28,7 +28,7 @@ const handleDeleteItem = (value: String) => {
   <div v-if="displayedOptions && displayedOptions.length">
     <div class="vs-dropdown-selected-options-title">Выбранные значения:</div>
 
-    <!-- todo: слот -->
+    <!-- todo: add slot -->
     <div
       v-for="(option, index) of displayedOptions"
       :key="index"

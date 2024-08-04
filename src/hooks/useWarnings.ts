@@ -1,7 +1,7 @@
 import { onMounted } from 'vue'
-import { IProps } from '@/conf/props'
+import { IVueSelectProps } from '@/types'
 
-export function useWarnings(props: IProps) {
+export function useWarnings(props: IVueSelectProps) {
   onMounted(() => {
     if (props.remote && props.options.length) {
       console.warn(

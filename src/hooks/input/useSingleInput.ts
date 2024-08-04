@@ -1,7 +1,7 @@
-import { ISelectOption, TValue } from '@/types'
+import { IVueSelectOption, TVueSelectSingleValue } from '@/types'
 
 export function useSingleInput() {
-  const handleInput = (value: TValue | null, selectedOption: ISelectOption) => {
+  const handleInput = (value: TVueSelectSingleValue, selectedOption: IVueSelectOption) => {
     // todo: check clearable
     if (value && value.value === selectedOption.value) {
       return null

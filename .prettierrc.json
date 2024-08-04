@@ -12,7 +12,8 @@
     "^@/i18n",
     "^@/hooks",
     "^@/helpers",
-    "^@/components"
+    "^@/components",
+    "^@/scss"
   ],
   "importOrderSortSpecifiers": true
 }

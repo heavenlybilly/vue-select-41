@@ -1,6 +1,6 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
 import VueSelect from '@/VueSelect.vue'
+import { defineComponent } from 'vue'
 import '@/scss/style.scss'
 
 export default defineComponent({
@@ -11,7 +11,7 @@ export default defineComponent({
 
 <template>
   <div class="wrapper">
-    <vue-select />
+    <vue-select label="Тестовое поле ввода" />
   </div>
 </template>
 

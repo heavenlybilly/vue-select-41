@@ -1,7 +1,7 @@
-import { ISelectOption, TValue } from '@/types'
+import { IVueSelectOption, TVueSelectMultipleValue } from '@/types'
 
 export function useMultipleInput() {
-  const handleInput = (value: TValue[], selectedOption: ISelectOption) => {
+  const handleInput = (value: TVueSelectMultipleValue, selectedOption: IVueSelectOption) => {
     const alreadySelected = !!value.find((item) => item.value === selectedOption.value)
 
     if (alreadySelected) {
