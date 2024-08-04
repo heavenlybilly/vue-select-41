@@ -1,0 +1,23 @@
+.vs-displayed-value {
+  display: flex;
+  align-items: center;
+}
+
+.vs-displayed-value-item {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &--multiple {
+    padding: 1px 4px;
+    border-radius: 3px;
+    background-color: #5a74f0;
+    color: #fff;
+
+    & + & {
+      margin-left: 5px;
+    }
+  }
+}

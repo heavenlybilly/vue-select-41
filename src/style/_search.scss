@@ -1,0 +1,16 @@
+.vs-search {
+  padding: 5px;
+}
+
+.vs-search-input {
+  padding: 5px;
+  width: 100%;
+  border: 1px solid #dadada;
+  outline: none;
+  background-color: #fff;
+  border-radius: 5px;
+
+  &::placeholder {
+    color: #8e8e8e;
+  }
+}

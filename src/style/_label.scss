@@ -1,0 +1,17 @@
+.vs-label {
+  display: inline-block;
+  margin-bottom: 5px;
+  cursor: default;
+
+  &--required {
+    position: relative;
+
+    &:after {
+      position: absolute;
+      content: '*';
+      color: #c64949;
+      top: -2px;
+      right: -8px;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+.vs-field-wrapper {
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid #dadada;
+}
+
+.vs-field {
+  display: flex;
+  align-items: center;
+  padding: 3px 42px 3px 10px;
+  margin-right: 32px;
+  cursor: text;
+  overflow: hidden;
+  max-height: 36px;
+  min-height: 36px;
+}
+
+.vs-field-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-field-placeholder {
+  color: #8e8e8e;
+  user-select: none;
+}

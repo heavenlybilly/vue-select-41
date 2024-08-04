@@ -1,4 +1,4 @@
 import VueSelect from './VueSelect.vue'
-import './scss/style.scss'
+import '@/style/index.scss'
 
 export { VueSelect }

@@ -1,7 +1,7 @@
 <script lang="ts">
 import VueSelect from '@/VueSelect.vue'
 import { defineComponent } from 'vue'
-import '@/scss/style.scss'
+import '@/style/index.scss'
 
 export default defineComponent({
   name: 'App',

@@ -1,0 +1,15 @@
+.vs-wrapper {
+  position: relative;
+}
+
+.vs-native-element {
+  display: none !important;
+}
+
+@import "label";
+@import "field";
+@import "displayed-value";
+@import "search";
+@import "dropdown";
+@import "plugs";
+@import "elements";
