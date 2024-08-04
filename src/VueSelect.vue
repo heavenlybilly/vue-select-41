@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script lang="ts">
 import VsField from '@/components/VsField.vue'
 import VsLabel from '@/components/VsLabel.vue'
 import VsOption from '@/components/VsOption.vue'
 import VsSearchInput from '@/components/VsSearchInput.vue'
 import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
-import { PropType, Ref, computed, ref, useSlots, watch } from 'vue'
+import { PropType, Ref, computed, defineComponent, ref, useSlots, watch } from 'vue'
 import { IVueSelectOption, TVueSelectRemoteFunction, TVueSelectValue } from '@/types'
 import { useInput } from '@/hooks/input/useInput'
 import { useFocus } from '@/hooks/useFocus'
@@ -14,188 +14,185 @@ import { useWarnings } from '@/hooks/useWarnings'
 import debounce from '@/helpers/debounce'
 import i18n from '@/helpers/i18n'
 
-const props = defineProps({
-  // todo
-  // clearable: {
-  //   type: Boolean,
-  //   default: false,
-  // },
-  closeOnSelect: {
-    type: Boolean,
-    default: false,
+export default defineComponent({
+  name: 'VueSelect',
+  components: {
+    VsField,
+    VsLabel,
+    VsOption,
+    VsSearchInput,
+    VsSelectedOptions,
   },
-  // todo
-  // disabled: {
-  //   type: Boolean,
-  //   default: false,
-  // },
-  label: {
-    type: String,
-    required: false,
+  props: {
+    closeOnSelect: {
+      type: Boolean,
+      default: false,
+    },
+    label: {
+      type: String,
+      required: false,
+    },
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+    name: {
+      type: String,
+      required: false,
+    },
+    options: {
+      type: Array as PropType<IVueSelectOption[]>,
+      default: () => [],
+    },
+    placeholder: {
+      type: String,
+      required: false,
+    },
+    remote: {
+      type: Boolean,
+      default: false,
+    },
+    remoteFunction: {
+      type: Function as PropType<TVueSelectRemoteFunction>,
+      required: false,
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
+    value: {
+      type: [Object, Array] as PropType<TVueSelectValue>,
+      required: false,
+    },
+    selectedDisplayLimit: {
+      type: Number,
+      default: 3,
+    },
   },
-  // todo: options transform
-  // labelField: {
-  //   type: String,
-  //   default: 'value',
-  // },
-  multiple: {
-    type: Boolean,
-    default: false,
+  emits: {
+    input: (value: TVueSelectValue) => true,
+    'dropdown:opened': () => true,
+    'dropdown:closed': () => true,
   },
-  name: {
-    type: String,
-    required: false,
-  },
-  options: {
-    type: Array as PropType<IVueSelectOption[]>,
-    default: () => [],
-  },
-  placeholder: {
-    type: String,
-    required: false,
-  },
-  // todo + warnings
-  // perPage: {
-  //   type: Number,
-  //   default: 20,
-  // },
-  remote: {
-    type: Boolean,
-    default: false,
-  },
-  remoteFunction: {
-    type: Function as PropType<TVueSelectRemoteFunction>,
-    required: false,
-  },
-  required: {
-    type: Boolean,
-    default: false,
-  },
-  // todo: options transform
-  // valueField: {
-  //   type: String,
-  //   default: 'value',
-  // },
-  value: {
-    type: [Object, Array] as PropType<TVueSelectValue>,
-    required: false,
-  },
-  // todo
-  // hasPagination: {
-  //   type: Boolean,
-  //   default: false,
-  // },
-  selectedDisplayLimit: {
-    type: Number,
-    default: 3,
+  setup(props, { emit }) {
+    const nativeElement: Ref<HTMLSelectElement | null> = ref(null)
+    const dropdownElement: Ref<HTMLElement | null> = ref(null)
+
+    useWarnings(props)
+
+    const slots = useSlots()
+    const { focus, setFocus } = useFocus([props.closeOnSelect ? ref(null) : dropdownElement])
+    const { search, remoteOptions, fetchOptions } = useRemote()
+    const { selectOption, deleteItem } = useInput(props.multiple)
+    const { syncValues } = useNativeSelect()
+
+    const searchedOptions = computed(() => {
+      if (props.remote) {
+        return remoteOptions.value
+      }
+
+      return props.options.filter((item) => {
+        return item.label.toLowerCase().includes(search.value?.toLowerCase() ?? '')
+      })
+    })
+
+    const displayedOptions = computed(() => {
+      const selectedValues = Array.isArray(props.value)
+        ? props.value.map((item) => item.value)
+        : [props.value?.value].filter(Boolean)
+
+      return searchedOptions.value.map((option) => ({
+        ...option,
+        selected: selectedValues.includes(option.value),
+      }))
+    })
+
+    const focusChangeHandle = () => {
+      setFocus(!focus.value)
+    }
+
+    const selectHandle = (option: IVueSelectOption) => {
+      const newValue = selectOption(props.value, option)
+      emit('input', newValue)
+    }
+
+    const handleDeleteItem = (value: String) => {
+      if (Array.isArray(props.value)) {
+        const newValue = deleteItem(props.value, value)
+        emit('input', newValue ?? null)
+      }
+    }
+
+    watch(
+      () => focus.value,
+      async (newValue) => {
+        if (!newValue) {
+          search.value = null
+          remoteOptions.value = []
+        }
+
+        if (newValue && props.remote && props.remoteFunction) {
+          remoteOptions.value = await fetchOptions(props.remoteFunction, search.value)
+        }
+
+        if (newValue) {
+          emit('dropdown:opened')
+        } else {
+          emit('dropdown:closed')
+        }
+      },
+    )
+
+    watch(
+      () => search.value,
+      debounce(async (value) => {
+        if (props.remote && props.remoteFunction) {
+          remoteOptions.value = await fetchOptions(props.remoteFunction, value)
+        }
+      }, 200),
+    )
+
+    watch(
+      () => props.value,
+      (newValue) => {
+        if (nativeElement.value) {
+          syncValues(nativeElement.value, newValue)
+        }
+      },
+    )
+
+    return {
+      nativeElement,
+      dropdownElement,
+      focus,
+      searchedOptions,
+      displayedOptions,
+      focusChangeHandle,
+      selectHandle,
+      handleDeleteItem,
+      slots,
+      search,
+      i18n,
+    }
   },
 })
-const emits = defineEmits(['input', 'dropdown:opened', 'dropdown:closed'])
-
-const nativeElement: Ref<HTMLSelectElement | null> = ref(null)
-const dropdownElement: Ref<HTMLElement | null> = ref(null)
-
-useWarnings(props)
-
-const slots = useSlots()
-const { focus, setFocus } = useFocus([props.closeOnSelect ? ref(null) : dropdownElement])
-const { search, remoteOptions, fetchOptions } = useRemote()
-const { selectOption, deleteItem } = useInput(props.multiple)
-const { syncValues } = useNativeSelect()
-
-const searchedOptions = computed(() => {
-  if (props.remote) {
-    return remoteOptions.value
-  }
-
-  return props.options.filter((item) => {
-    return item.label.toLowerCase().includes(search.value?.toLowerCase() ?? '')
-  })
-})
-
-const displayedOptions = computed(() => {
-  const selectedValues = Array.isArray(props.value)
-    ? props.value.map((item) => item.value)
-    : [props.value?.value].filter(Boolean)
-
-  return searchedOptions.value.map((option) => ({
-    ...option,
-    selected: selectedValues.includes(option.value),
-  }))
-})
-
-const focusChangeHandle = () => {
-  setFocus(!focus.value)
-}
-
-const selectHandle = (option: IVueSelectOption) => {
-  const newValue = selectOption(props.value, option)
-  emits('input', newValue)
-}
-
-const handleDeleteItem = (value: String) => {
-  if (Array.isArray(props.value)) {
-    const newValue = deleteItem(props.value, value)
-    emits('input', newValue)
-  }
-}
-
-watch(
-  () => focus.value,
-  async (newValue) => {
-    if (!newValue) {
-      search.value = null
-      remoteOptions.value = []
-    }
-
-    if (newValue && props.remote && props.remoteFunction) {
-      remoteOptions.value = await fetchOptions(props.remoteFunction, search.value)
-    }
-
-    if (newValue) {
-      emits('dropdown:opened')
-    } else {
-      emits('dropdown:closed')
-    }
-  },
-)
-
-watch(
-  () => search.value,
-  debounce(async (value) => {
-    if (props.remote && props.remoteFunction) {
-      remoteOptions.value = await fetchOptions(props.remoteFunction, value)
-    }
-  }, 200),
-)
-
-watch(
-  () => props.value,
-  (newValue) => {
-    if (nativeElement.value) {
-      syncValues(nativeElement.value, newValue)
-    }
-  },
-)
 </script>
 
 <template>
   <div class="vs-wrapper">
     <select
       ref="nativeElement"
-      :name="props.name"
-      :multiple="props.multiple"
-      :required="props.required"
+      :name="name"
+      :multiple="multiple"
+      :required="required"
       class="vs-native-element"
     />
 
-    <vs-label v-if="props.label" :required="props.required" @click="focusChangeHandle">
-      {{ props.label }}:
-    </vs-label>
+    <vs-label v-if="label" :required="required" @click="focusChangeHandle"> {{ label }}: </vs-label>
     <vs-field
-      :value="props.value"
-      :placeholder="props.placeholder"
-      :selected-display-limit="props.selectedDisplayLimit"
+      :value="value"
+      :placeholder="placeholder"
+      :selected-display-limit="selectedDisplayLimit"
       :focus="focus"
       @click="focusChangeHandle"
       @delete-item="handleDeleteItem"
@@ -205,7 +202,7 @@ watch(
       <vs-search-input v-model="search" />
 
       <div class="vs-dropdown-options-list">
-        <vs-selected-options :value="props.value" @delete-item="handleDeleteItem" />
+        <vs-selected-options :value="value" @delete-item="handleDeleteItem" />
 
         <template v-if="slots.option">
           <div
