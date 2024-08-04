@@ -1,11 +1,11 @@
 {
-  "name": "vue-select-182",
+  "name": "vue-select-41",
   "description": "Select component for Vue 2.7",
   "version": "0.0.1-alpha.1",
   "license": "MIT",
-  "homepage": "https://github.com/heavenlybilly/vue-select-182",
-  "main": "dist/vue-select-182.umd.js",
-  "module": "dist/vue-select-182.es.js",
+  "homepage": "https://github.com/heavenlybilly/vue-select-41",
+  "main": "dist/vue-select-41.umd.js",
+  "module": "dist/vue-select-41.es.js",
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -30,10 +30,10 @@
   "keywords": ["vue", "select", "component", "vue-component", "vue2", "vue-select"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/heavenlybilly/vue-select-182.git"
+    "url": "https://github.com/heavenlybilly/vue-select-41.git"
   },
   "bugs": {
-    "url": "https://github.com/heavenlybilly/vue-select-182/issues"
+    "url": "https://github.com/heavenlybilly/vue-select-41/issues"
   },
   "author": {
     "name": "Sergei Spitsin",

@@ -19,8 +19,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'VueSelect182Test',
-      fileName: (format) => `vue-select-182-test.${format}.js`,
+      name: 'VueSelect41',
+      fileName: (format) => `vue-select-41.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],
