@@ -1,6 +1,6 @@
-import { useMultipleInput } from './useMultipleInput'
-import { useSingleInput } from './useSingleInput'
-import { ISelectOption, TValue } from '../../types'
+import { ISelectOption, TValue } from '@/types'
+import { useMultipleInput } from '@/hooks/input/useMultipleInput'
+import { useSingleInput } from '@/hooks/input/useSingleInput'
 
 export function useInput(multiple: Boolean) {
   const { handleInput: handleInputMultiple } = useMultipleInput()

@@ -1,4 +1,4 @@
-import { ISelectOption, TValue } from '../../types'
+import { ISelectOption, TValue } from '@/types'
 
 export function useMultipleInput() {
   const handleInput = (value: TValue[], selectedOption: ISelectOption) => {

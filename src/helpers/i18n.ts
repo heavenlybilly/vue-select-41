@@ -1,5 +1,5 @@
-import pronounce from './pronounce'
-import ru from '../i18n/ru'
+import ru from '@/i18n/ru'
+import pronounce from '@/helpers/pronounce'
 
 const locale = ru
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { TValue } from '@/types'
 import { PropType, computed } from 'vue'
-import { TValue } from '../types'
 
 const props = defineProps({
   value: {

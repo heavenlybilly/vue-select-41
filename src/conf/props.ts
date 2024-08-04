@@ -1,5 +1,5 @@
+import { ISelectOption, TRemoteFunction, TValue } from '@/types'
 import { PropType } from 'vue'
-import { ISelectOption, TRemoteFunction, TValue } from '../types'
 
 export interface IProps {
   label?: string

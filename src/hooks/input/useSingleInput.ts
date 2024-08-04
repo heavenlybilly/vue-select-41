@@ -1,4 +1,4 @@
-import { ISelectOption, TValue } from '../../types'
+import { ISelectOption, TValue } from '@/types'
 
 export function useSingleInput() {
   const handleInput = (value: TValue | null, selectedOption: ISelectOption) => {

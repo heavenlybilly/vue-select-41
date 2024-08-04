@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { TValue } from '@/types'
 import { PropType, computed } from 'vue'
-import i18n from '../helpers/i18n'
-import { TValue } from '../types'
+import i18n from '@/helpers/i18n'
 
 const props = defineProps({
   value: {

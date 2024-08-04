@@ -1,5 +1,5 @@
 import { Ref, ref } from 'vue'
-import { ISelectOption, TRemoteFunction } from '../types'
+import { ISelectOption, TRemoteFunction } from '@/types'
 
 export function useRemote() {
   const search: Ref<String | null> = ref(null)

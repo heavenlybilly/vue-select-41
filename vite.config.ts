@@ -2,9 +2,15 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue2'
 import * as path from 'path'
 import dts from 'vite-plugin-dts'
+import alias from '@rollup/plugin-alias';
 
 export default defineConfig({
   plugins: [
+    alias({
+      entries: [
+        { find: '@', replacement: path.resolve(__dirname, 'src') },
+      ]
+    }),
     vue(),
     dts({
       insertTypesEntry: true,

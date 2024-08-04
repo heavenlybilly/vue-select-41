@@ -6,12 +6,13 @@
   "trailingComma": "all",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
+    "vue",
     "<THIRD_PARTY_MODULES>",
+    "^[./]",
     "^@/i18n",
     "^@/hooks",
     "^@/helpers",
-    "^@/components",
-    "^[./]"
+    "^@/components"
   ],
   "importOrderSortSpecifiers": true
 }

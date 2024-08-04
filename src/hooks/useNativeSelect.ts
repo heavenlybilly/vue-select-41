@@ -1,4 +1,4 @@
-import { TValue } from '../types'
+import { TValue } from '@/types'
 
 export function useNativeSelect() {
   const syncValues = (element: HTMLSelectElement, value: TValue | TValue[] | null | undefined) => {

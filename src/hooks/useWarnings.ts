@@ -1,5 +1,5 @@
 import { onMounted } from 'vue'
-import { IProps } from '../conf/props'
+import { IProps } from '@/conf/props'
 
 export function useWarnings(props: IProps) {
   onMounted(() => {

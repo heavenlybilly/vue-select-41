@@ -1,19 +1,19 @@
 <script setup lang="ts">
+import VsField from '@/components/VsField.vue'
+import VsLabel from '@/components/VsLabel.vue'
+import VsOption from '@/components/VsOption.vue'
+import VsSearchInput from '@/components/VsSearchInput.vue'
+import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
 import { Ref, computed, ref, useSlots, watch } from 'vue'
-import VsField from './components/VsField.vue'
-import VsLabel from './components/VsLabel.vue'
-import VsOption from './components/VsOption.vue'
-import VsSearchInput from './components/VsSearchInput.vue'
-import VsSelectedOptions from './components/VsSelectedOptions.vue'
-import { VsProps } from './conf/props'
-import debounce from './helpers/debounce'
-import i18n from './helpers/i18n'
-import { useInput } from './hooks/input/useInput'
-import { useFocus } from './hooks/useFocus'
-import { useNativeSelect } from './hooks/useNativeSelect'
-import { useRemote } from './hooks/useRemote'
-import { useWarnings } from './hooks/useWarnings'
-import { ISelectOption } from './types'
+import { VsProps } from '@/conf/props'
+import { ISelectOption } from '@/types'
+import { useInput } from '@/hooks/input/useInput'
+import { useFocus } from '@/hooks/useFocus'
+import { useNativeSelect } from '@/hooks/useNativeSelect'
+import { useRemote } from '@/hooks/useRemote'
+import { useWarnings } from '@/hooks/useWarnings'
+import debounce from '@/helpers/debounce'
+import i18n from '@/helpers/i18n'
 
 const props = defineProps(VsProps)
 const emits = defineEmits(['input', 'dropdown:opened', 'dropdown:closed'])
@@ -115,19 +115,17 @@ watch(
       class="vs-native-element"
     />
 
-    <div>
-      <vs-label v-if="props.label" :required="props.required" @click="focusChangeHandle">
-        {{ props.label }}:
-      </vs-label>
-      <vs-field
-        :value="props.value"
-        :placeholder="props.placeholder"
-        :selected-display-limit="props.selectedDisplayLimit"
-        :focus="focus"
-        @click="focusChangeHandle"
-        @delete-item="handleDeleteItem"
-      />
-    </div>
+    <vs-label v-if="props.label" :required="props.required" @click="focusChangeHandle">
+      {{ props.label }}:
+    </vs-label>
+    <vs-field
+      :value="props.value"
+      :placeholder="props.placeholder"
+      :selected-display-limit="props.selectedDisplayLimit"
+      :focus="focus"
+      @click="focusChangeHandle"
+      @delete-item="handleDeleteItem"
+    />
 
     <div v-if="focus" ref="dropdownElement" class="vs-dropdown">
       <vs-search-input v-model="search" />
