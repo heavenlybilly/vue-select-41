@@ -26,7 +26,7 @@ export default defineComponent({
   props: {
     closeOnSelect: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     label: {
       type: String,
@@ -69,11 +69,7 @@ export default defineComponent({
       default: 3,
     },
   },
-  emits: {
-    input: (value: TVueSelectValue) => true,
-    'dropdown:opened': () => true,
-    'dropdown:closed': () => true,
-  },
+  emits: ['input', 'dropdown:opened', 'dropdown:closed'],
   setup(props, { emit }) {
     const nativeElement: Ref<HTMLSelectElement | null> = ref(null)
     const dropdownElement: Ref<HTMLElement | null> = ref(null)
@@ -188,7 +184,7 @@ export default defineComponent({
       class="vs-native-element"
     />
 
-    <vs-label v-if="label" :required="required" @click="focusChangeHandle"> {{ label }}: </vs-label>
+    <vs-label v-if="label" :required="required" @click="focusChangeHandle"> {{ label }}:</vs-label>
     <vs-field
       :value="value"
       :placeholder="placeholder"
