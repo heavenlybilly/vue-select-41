@@ -8,27 +8,169 @@ export default defineComponent({
   components: { VueSelect },
   data() {
     return {
-      value: null,
+      valueStaticSingle: null,
+      valueStaticMultiple: [],
+      valueRemoteSingle: null,
+      valueRemoteMultiple: [],
       options: [
-        { value: '1', label: 'Option 1' },
-        { value: '2', label: 'Option 2' },
-        { value: '3', label: 'Option 3' },
-        { value: '4', label: 'Option 4' },
-        { value: '5', label: 'Option 5' },
+        { value: '1', label: 'Russia' },
+        { value: '2', label: 'USA' },
+        { value: '3', label: 'UK' },
+        { value: '4', label: 'Australia' },
+        { value: '5', label: 'Hungary' },
+        { value: '6', label: 'Canada' },
+        { value: '7', label: 'Belarus' },
       ],
     }
+  },
+  methods: {
+    async fetchOptions(search?: string | null) {
+      const response = await fetch('https://fakestoreapi.com/products')
+      const items: { id: number; title: string }[] = await response.json()
+
+      return items
+        .map((item) => ({
+          value: `${item.id}`,
+          label: item.title,
+        }))
+        .filter((item) => {
+          if (!search) {
+            return true
+          }
+
+          return item.label.toLowerCase().includes(search.toLowerCase())
+        })
+    },
   },
 })
 </script>
 
 <template>
   <div class="wrapper">
-    <vue-select v-model="value" :options="options" label="Тестовое поле ввода" @input=""/>
+    <!-- static single -->
+    <div class="block">
+      <div class="block-title">Static single</div>
+      <div class="logs">
+        <div class="logs-item">
+          <div class="logs-item--label">value:</div>
+          <div class="logs-item--value">{{ valueStaticSingle ?? 'null' }}</div>
+        </div>
+      </div>
+
+      <vue-select v-model="valueStaticSingle" :options="options" label="Static Single" />
+    </div>
+
+    <!-- static multiple -->
+    <div class="block">
+      <div class="block-title">Static multiple</div>
+      <div class="logs">
+        <div class="logs-item">
+          <div class="logs-item--label">value:</div>
+          <div class="logs-item--value">{{ valueStaticMultiple }}</div>
+        </div>
+      </div>
+
+      <vue-select
+        v-model="valueStaticMultiple"
+        :options="options"
+        :selected-display-limit="5"
+        :close-on-select="false"
+        multiple
+        label="Static Multiple"
+      />
+    </div>
+
+    <!-- remote single -->
+    <div class="block">
+      <div class="block-title">Remote single</div>
+      <div class="logs">
+        <div class="logs-item">
+          <div class="logs-item--label">value:</div>
+          <div class="logs-item--value">{{ valueRemoteSingle ?? 'null' }}</div>
+        </div>
+      </div>
+
+      <vue-select
+        v-model="valueRemoteSingle"
+        :remote-function="fetchOptions"
+        remote
+        label="Remote Single"
+      />
+    </div>
+
+    <!-- remote multiple -->
+    <div class="block">
+      <div class="block-title">Remote multiple</div>
+      <div class="logs">
+        <div class="logs-item">
+          <div class="logs-item--label">value:</div>
+          <div class="logs-item--value">{{ valueRemoteMultiple ?? 'null' }}</div>
+        </div>
+      </div>
+
+      <vue-select
+        v-model="valueRemoteMultiple"
+        :remote-function="fetchOptions"
+        :selected-display-limit="2"
+        multiple
+        remote
+        label="Remote Multiple"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .wrapper {
+  display: grid;
+  grid-template-columns: 500px 500px 500px 500px;
+  grid-gap: 1rem;
+  margin-top: 2rem;
+  margin-left: 2rem;
   width: 500px;
+  font-family: system-ui;
+  font-size: 15px;
+}
+
+.block {
+  padding: 1.2rem;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+}
+
+.block-title {
+  font-weight: 600;
+  color: #609755;
+  margin-bottom: 1rem;
+}
+
+.logs {
+  margin-bottom: 2rem;
+  min-height: 100px;
+}
+
+.logs-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: #e8f4e5;
+
+  & + & {
+    margin-top: 0.5rem;
+  }
+}
+
+.logs-item--label {
+  font-weight: 600;
+  color: #609755;
+}
+
+.logs-item--value {
+  color: #151515;
+  font-weight: 300;
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
 </style>
