@@ -241,7 +241,7 @@ export default defineComponent({
     <div ref="dropdownElement" class="vs-dropdown" :class="dropdownClasses">
       <vs-search-input v-if="searchable" v-model="search" />
 
-      <div v-if="displayedOptions.length" class="vs-dropdown-options-list">
+      <div v-if="displayedOptions.length || selectedOptions.length" class="vs-dropdown-options-list">
         <vs-selected-options
           v-if="multiple"
           :selected-options="selectedOptions"
