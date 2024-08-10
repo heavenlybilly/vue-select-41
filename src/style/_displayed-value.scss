@@ -1,6 +1,14 @@
-.vs-displayed-value {
+.vs-displayed-value-wrapper {
   display: flex;
   align-items: center;
+}
+
+.vs-displayed-value {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--vs-displayed-value-font-size);
+  color: var(--vs-displayed-value-color);
+  line-height: 1;
 }
 
 .vs-displayed-value-item {
@@ -9,15 +17,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: var(--vs-displayed-value-item-font-size);
+  padding: var(--vs-displayed-value-item-padding-y) var(--vs-displayed-value-item-padding-x);
+  border-radius: var(--vs-displayed-value-item-border-radius);
+  background-color: var(--vs-displayed-value-item-background-color);
+  color: var(--vs-displayed-value-item-color);
+  line-height: 1;
 
-  &--multiple {
-    padding: 1px 4px;
-    border-radius: 3px;
-    background-color: #5a74f0;
-    color: #fff;
-
-    & + & {
-      margin-left: 5px;
-    }
+  & + & {
+    margin-left: var(--vs-displayed-value-item-spacing);
   }
 }

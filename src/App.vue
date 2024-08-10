@@ -57,7 +57,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <vue-select v-model="valueStaticSingle" :options="options" label="Static Single" />
+      <vue-select v-model="valueStaticSingle" :options="options" required label="Static Single" />
     </div>
 
     <!-- static multiple -->

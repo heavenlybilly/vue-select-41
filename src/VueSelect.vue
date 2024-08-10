@@ -103,6 +103,10 @@ export default defineComponent({
       }))
     })
 
+    const dropdownClasses = computed(() => ({
+      'vs-dropdown--visible': focus.value
+    }))
+
     const focusChangeHandle = () => {
       setFocus(!focus.value)
     }
@@ -163,6 +167,7 @@ export default defineComponent({
       focus,
       searchedOptions,
       displayedOptions,
+      dropdownClasses,
       focusChangeHandle,
       selectHandle,
       handleDeleteItem,
@@ -194,10 +199,10 @@ export default defineComponent({
       @delete-item="handleDeleteItem"
     />
 
-    <div v-if="focus" ref="dropdownElement" class="vs-dropdown">
+    <div ref="dropdownElement" class="vs-dropdown" :class="dropdownClasses">
       <vs-search-input v-model="search" />
 
-      <div class="vs-dropdown-options-list">
+      <div v-if="displayedOptions.length" class="vs-dropdown-options-list">
         <vs-selected-options :value="value" @delete-item="handleDeleteItem" />
 
         <template v-if="slots.option">
@@ -223,7 +228,7 @@ export default defineComponent({
 
       <template v-if="!displayedOptions.length">
         <slot v-if="slots.noOptions" name="noOptions"></slot>
-        <div v-else class="vs-no-options">{{ i18n.noResults }}</div>
+        <div v-else class="vs-dropdown-plug">{{ i18n.noResults }}</div>
       </template>
     </div>
   </div>

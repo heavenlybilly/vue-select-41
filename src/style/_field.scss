@@ -1,18 +1,19 @@
 .vs-field-wrapper {
   position: relative;
-  border-radius: 5px;
-  border: 1px solid #dadada;
+  border-radius: var(--vs-field-wrapper-border-radius);
+  border: var(--vs-field-wrapper-border-width) solid var(--vs-field-wrapper-border-color);
 }
 
 .vs-field {
   display: flex;
   align-items: center;
-  padding: 3px 42px 3px 10px;
-  margin-right: 32px;
+  padding: 0 var(--vs-field-padding-x);
+  margin-right: var(--vs-field-padding-arrow-container-width);
   cursor: text;
   overflow: hidden;
-  max-height: 36px;
-  min-height: 36px;
+  height: var(--vs-field-height-height);
+  max-height: var(--vs-field-height-height);
+  min-height: var(--vs-field-height-height);
 }
 
 .vs-field-arrow {
@@ -20,13 +21,14 @@
   top: 0;
   bottom: 0;
   right: 0;
-  width: 32px;
+  width: var(--vs-field-padding-arrow-container-width);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .vs-field-placeholder {
-  color: #8e8e8e;
+  color: var(--vs-field-placeholder-color);
   user-select: none;
+  font-size: var(--vs-field-placeholder-font-size);
 }
