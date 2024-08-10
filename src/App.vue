@@ -57,7 +57,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <vue-select v-model="valueStaticSingle" :options="options" required label="Static Single" />
+      <vue-select v-model="valueStaticSingle" :options="options" :searchable="false" required label="Static Single" />
     </div>
 
     <!-- static multiple -->
@@ -112,6 +112,8 @@ export default defineComponent({
         v-model="valueRemoteMultiple"
         :remote-function="fetchOptions"
         :selected-display-limit="2"
+        :searchable="false"
+        :close-on-select="false"
         multiple
         remote
         label="Remote Multiple"

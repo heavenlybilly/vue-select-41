@@ -1,5 +1,5 @@
 .vs-search {
-  padding: var(--vs-search-wrapper-padding-top) var(--vs-search-wrapper-padding-inline) var(--vs-search-wrapper-padding-bottom) var(--vs-search-wrapper-padding-inline);
+  padding: var(--vs-search-wrapper-padding-top) var(--vs-search-wrapper-padding-inline) 0 var(--vs-search-wrapper-padding-inline);
   width: calc(100% - var(--vs-search-wrapper-padding-inline) * 2);
   display: flex;
   justify-content: center;

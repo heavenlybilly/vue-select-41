@@ -60,6 +60,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    searchable: {
+      type: Boolean,
+      default: true,
+    },
     value: {
       type: [Object, Array] as PropType<VueSelectValue>,
       required: false,
@@ -87,6 +91,10 @@ export default defineComponent({
         return remoteOptions.value
       }
 
+      if (!props.searchable) {
+        return props.options
+      }
+
       return props.options.filter((item) => {
         return item.label.toLowerCase().includes(search.value?.toLowerCase() ?? '')
       })
@@ -103,8 +111,18 @@ export default defineComponent({
       }))
     })
 
+    const selectedOptions = computed(() => {
+      if (!Array.isArray(props.value)) {
+        return props.value ? [props.value] : []
+      }
+
+      return props.value
+    })
+
     const dropdownClasses = computed(() => ({
-      'vs-dropdown--visible': focus.value
+      'vs-dropdown--visible': focus.value,
+      'vs-dropdown--no-search': !props.searchable,
+      'vs-dropdown--no-selected': !selectedOptions.value.length,
     }))
 
     const focusChangeHandle = () => {
@@ -167,6 +185,7 @@ export default defineComponent({
       focus,
       searchedOptions,
       displayedOptions,
+      selectedOptions,
       dropdownClasses,
       focusChangeHandle,
       selectHandle,
@@ -200,10 +219,14 @@ export default defineComponent({
     />
 
     <div ref="dropdownElement" class="vs-dropdown" :class="dropdownClasses">
-      <vs-search-input v-model="search" />
+      <vs-search-input v-if="searchable" v-model="search" />
 
       <div v-if="displayedOptions.length" class="vs-dropdown-options-list">
-        <vs-selected-options :value="value" @delete-item="handleDeleteItem" />
+        <vs-selected-options
+          v-if="multiple"
+          :selected-options="selectedOptions"
+          @delete-item="handleDeleteItem"
+        />
 
         <template v-if="slots.option">
           <div
