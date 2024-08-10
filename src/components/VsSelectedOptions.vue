@@ -38,7 +38,7 @@ const handleDeleteItem = (value: String) => {
       {{ option.label }}
     </div>
 
-    <hr />
+    <div class="vs-dropdown-selected-options-divider"/>
   </div>
 </template>
 

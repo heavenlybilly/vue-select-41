@@ -78,21 +78,21 @@ const handleDeleteItem = (value: String) => {
 <template>
   <div class="vs-field-wrapper" @click.stop="handleClick">
     <div class="vs-field">
-      <div v-if="hasValue" class="vs-displayed-value">
-        <div v-if="singleValue" class="vs-displayed-value-item">{{ singleValue.label }}</div>
-        <template v-else-if="multipleValue.length <= props.selectedDisplayLimit">
+      <div v-if="hasValue" class="vs-displayed-value-wrapper">
+        <div v-if="singleValue" class="vs-displayed-value">{{ singleValue.label }}</div>
+        <div class="vs-displayed-value" v-else-if="multipleValue.length > props.selectedDisplayLimit">
+          {{ selectedRecordsTitle }}
+        </div>
+        <template v-else>
           <div
             v-for="(item, index) of multipleValue"
             :key="index"
-            class="vs-displayed-value-item vs-displayed-value-item--multiple"
+            class="vs-displayed-value-item"
           >
             <span>{{ item.label }}</span>
             <span class="vs--cross" @click.stop="handleDeleteItem(item.value)"></span>
           </div>
         </template>
-        <div v-else>
-          {{ selectedRecordsTitle }}
-        </div>
       </div>
       <div v-else class="vs-field-placeholder">
         {{ displayedPlaceholder }}

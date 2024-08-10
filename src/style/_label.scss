@@ -1,7 +1,8 @@
 .vs-label {
   display: inline-block;
-  margin-bottom: 5px;
+  margin-bottom: var(--vs-label-margin-bottom);
   cursor: default;
+  font-size: var(--vs-label-font-size);
 
   &--required {
     position: relative;
@@ -9,9 +10,9 @@
     &:after {
       position: absolute;
       content: '*';
-      color: #c64949;
-      top: -2px;
-      right: -8px;
+      color: var(--vs-label-required-color);
+      top: var(--vs-label-required-top);
+      right: var(--vs-label-required-right);
     }
   }
 }
