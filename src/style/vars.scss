@@ -32,7 +32,8 @@
   --vs-displayed-value-item-spacing: 5px;
 
   // dropdown
-  --vs-dropdown-margin-top: 5px;
+  --vs-dropdown-margin-top: 0.3rem;
+  --vs-dropdown-padding-top: 0.3rem;
   --vs-dropdown-border-color: #dadada;
   --vs-dropdown-border-width: 1px;
   --vs-dropdown-border-radius: 5px;
@@ -41,7 +42,6 @@
 
   // dropdown options list
   --vs-dropdown-options-list-max-height: 250px;
-  --vs-dropdown-options-list-margin-top: 0.6rem;
 
   // dropdown option
   --vs-dropdown-option-padding-y: 0.5rem;
@@ -67,7 +67,6 @@
 
   // search container
   --vs-search-wrapper-padding-top: 0.3rem;
-  --vs-search-wrapper-padding-bottom: 0;
   --vs-search-wrapper-padding-inline: 5px;
 
   // search input
@@ -79,4 +78,8 @@
   --vs-search-input-background-color: #fff;
   --vs-search-input-font-size: 0.8rem;
   --vs-search-input-palceholder-color: #8e8e8e;
+
+  // positional relationship inside the dropdown
+  --vs-dropdown-search-options-list-space: 0.6rem;
+  --vs-dropdown-no-search-with-selected-options-list-margin-top: 0.3rem;
 }

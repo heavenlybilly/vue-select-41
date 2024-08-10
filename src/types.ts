@@ -27,6 +27,7 @@ export interface VueSelectProps {
   remote: boolean;
   remoteFunction?: (search: string | null) => Promise<VueSelectOption[]>;
   required: boolean;
+  searchable: boolean;
   // valueField: string;
   value?: VueSelectValue;
   // hasPagination: boolean;
