@@ -1,7 +1,7 @@
-import { TVueSelectValue } from '@/types'
+import { VueSelectValue } from '@/types'
 
 export function useNativeSelect() {
-  const syncValues = (element: HTMLSelectElement, value: TVueSelectValue | undefined) => {
+  const syncValues = (element: HTMLSelectElement, value: VueSelectValue | undefined) => {
     element.innerHTML = ''
 
     if (!value) {

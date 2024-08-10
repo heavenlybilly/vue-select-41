@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { TVueSelectValue } from '@/types'
+import { VueSelectValue } from '@/types'
 import { PropType, computed } from 'vue'
 import i18n from '@/helpers/i18n'
+import chevronDownIcon from '@/assets/icons/chevron-down.svg'
+import crossIcon from '@/assets/icons/cross.svg'
 
 const props = defineProps({
   value: {
-    type: [Array, Object] as PropType<TVueSelectValue>,
+    type: [Array, Object] as PropType<VueSelectValue>,
     required: false,
   },
   placeholder: {
@@ -51,7 +53,7 @@ const selectedRecordsTitle = computed(() => {
 })
 
 const arrowClass = computed(() => ({
-  'vs-chevron--up': props.focus,
+  'vs-field-arrow--up': props.focus,
 }))
 
 const displayedPlaceholder = computed(() => {
@@ -78,28 +80,32 @@ const handleDeleteItem = (value: String) => {
 <template>
   <div class="vs-field-wrapper" @click.stop="handleClick">
     <div class="vs-field">
-      <div v-if="hasValue" class="vs-displayed-value">
-        <div v-if="singleValue" class="vs-displayed-value-item">{{ singleValue.label }}</div>
-        <template v-else-if="multipleValue.length <= props.selectedDisplayLimit">
+      <div v-if="hasValue" class="vs-displayed-value-wrapper">
+        <div v-if="singleValue" class="vs-displayed-value">{{ singleValue.label }}</div>
+        <div class="vs-displayed-value" v-else-if="multipleValue.length > props.selectedDisplayLimit">
+          {{ selectedRecordsTitle }}
+        </div>
+        <template v-else>
           <div
             v-for="(item, index) of multipleValue"
             :key="index"
-            class="vs-displayed-value-item vs-displayed-value-item--multiple"
+            class="vs-displayed-value-item"
           >
             <span>{{ item.label }}</span>
-            <span class="vs--cross" @click.stop="handleDeleteItem(item.value)"></span>
+            <div class="vs-displayed-value-item-cross" @click.stop="handleDeleteItem(item.value)">
+              <img :src="crossIcon" alt="">
+            </div>
           </div>
         </template>
-        <div v-else>
-          {{ selectedRecordsTitle }}
-        </div>
       </div>
       <div v-else class="vs-field-placeholder">
         {{ displayedPlaceholder }}
       </div>
     </div>
-    <div class="vs-field-arrow">
-      <div :class="arrowClass" class="vs-chevron"></div>
+    <div class="vs-field-arrow-wrapper">
+      <div class="vs-field-arrow" :class="arrowClass">
+        <img :src="chevronDownIcon" alt="">
+      </div>
     </div>
   </div>
 </template>

@@ -1,32 +1,72 @@
 .vs-field-wrapper {
   position: relative;
-  border-radius: 5px;
-  border: 1px solid #dadada;
+  transition: all 150ms ease-in-out;
+  border-radius: var(--vs-field-wrapper-border-radius);
+  border: var(--vs-field-wrapper-border-width) solid var(--vs-field-wrapper-border-color);
+  background-color: var(--vs-field-wrapper-background-color);
+
+  &:not(.vs-field-wrapper--disabled):hover {
+    border: var(--vs-field-wrapper-border-width) solid var(--vs-field-wrapper-hovered-border-color);
+  }
+
+  &--disabled {
+    pointer-events: none;
+    background-color: var(--vs-field-wrapper-disabled-background-color);
+
+    .vs-displayed-value-item {
+      background-color: var(--vs-displayed-value-disabled-item-background-color);
+    }
+
+    .vs-displayed-value {
+      color: var(--vs-displayed-disabled-value-color);
+    }
+  }
 }
 
 .vs-field {
   display: flex;
   align-items: center;
-  padding: 3px 42px 3px 10px;
-  margin-right: 32px;
+  padding: 0 var(--vs-field-padding-x);
+  margin-right: var(--vs-field-padding-arrow-container-width);
   cursor: text;
   overflow: hidden;
-  max-height: 36px;
-  min-height: 36px;
+  height: var(--vs-field-height-height);
+  max-height: var(--vs-field-height-height);
+  min-height: var(--vs-field-height-height);
+  background-color: transparent;
 }
 
-.vs-field-arrow {
+.vs-field-arrow-wrapper {
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
-  width: 32px;
+  width: var(--vs-field-padding-arrow-container-width);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.vs-field-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 12px;
+    height: 12px;
+    transition: all 150ms ease-in-out;
+  }
+
+  &--up {
+    img {
+      transform: rotate(180deg);
+    }
+  }
+}
+
 .vs-field-placeholder {
-  color: #8e8e8e;
+  color: var(--vs-field-placeholder-color);
   user-select: none;
+  font-size: var(--vs-field-placeholder-font-size);
 }

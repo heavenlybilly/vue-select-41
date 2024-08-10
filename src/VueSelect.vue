@@ -5,7 +5,7 @@ import VsOption from '@/components/VsOption.vue'
 import VsSearchInput from '@/components/VsSearchInput.vue'
 import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
 import { PropType, Ref, computed, defineComponent, ref, useSlots, watch } from 'vue'
-import { IVueSelectOption, TVueSelectRemoteFunction, TVueSelectValue } from '@/types'
+import { VueSelectOption, VueSelectRemoteFunction, VueSelectValue } from '@/types'
 import { useInput } from '@/hooks/input/useInput'
 import { useFocus } from '@/hooks/useFocus'
 import { useNativeSelect } from '@/hooks/useNativeSelect'
@@ -26,6 +26,10 @@ export default defineComponent({
   props: {
     closeOnSelect: {
       type: Boolean,
+      default: true,
+    },
+    disabled: {
+      type: Boolean,
       default: false,
     },
     label: {
@@ -41,7 +45,7 @@ export default defineComponent({
       required: false,
     },
     options: {
-      type: Array as PropType<IVueSelectOption[]>,
+      type: Array as PropType<VueSelectOption[]>,
       default: () => [],
     },
     placeholder: {
@@ -53,15 +57,19 @@ export default defineComponent({
       default: false,
     },
     remoteFunction: {
-      type: Function as PropType<TVueSelectRemoteFunction>,
+      type: Function as PropType<VueSelectRemoteFunction>,
       required: false,
     },
     required: {
       type: Boolean,
       default: false,
     },
+    searchable: {
+      type: Boolean,
+      default: true,
+    },
     value: {
-      type: [Object, Array] as PropType<TVueSelectValue>,
+      type: [Object, Array] as PropType<VueSelectValue>,
       required: false,
     },
     selectedDisplayLimit: {
@@ -69,11 +77,7 @@ export default defineComponent({
       default: 3,
     },
   },
-  emits: {
-    input: (value: TVueSelectValue) => true,
-    'dropdown:opened': () => true,
-    'dropdown:closed': () => true,
-  },
+  emits: ['input', 'dropdown:opened', 'dropdown:closed'],
   setup(props, { emit }) {
     const nativeElement: Ref<HTMLSelectElement | null> = ref(null)
     const dropdownElement: Ref<HTMLElement | null> = ref(null)
@@ -89,6 +93,10 @@ export default defineComponent({
     const searchedOptions = computed(() => {
       if (props.remote) {
         return remoteOptions.value
+      }
+
+      if (!props.searchable) {
+        return props.options
       }
 
       return props.options.filter((item) => {
@@ -107,11 +115,31 @@ export default defineComponent({
       }))
     })
 
+    const selectedOptions = computed(() => {
+      if (!Array.isArray(props.value)) {
+        return props.value ? [props.value] : []
+      }
+
+      return props.value
+    })
+
+    const fieldWrapperClasses = computed(() => ({
+      'vs-field-wrapper--disabled': props.disabled
+    }))
+
+    const dropdownClasses = computed(() => ({
+      'vs-dropdown--visible': focus.value,
+      'vs-dropdown--no-search': !props.searchable,
+      'vs-dropdown--no-selected': !selectedOptions.value.length,
+    }))
+
     const focusChangeHandle = () => {
-      setFocus(!focus.value)
+      if (!props.disabled) {
+        setFocus(!focus.value)
+      }
     }
 
-    const selectHandle = (option: IVueSelectOption) => {
+    const selectHandle = (option: VueSelectOption) => {
       const newValue = selectOption(props.value, option)
       emit('input', newValue)
     }
@@ -161,12 +189,23 @@ export default defineComponent({
       },
     )
 
+    watch(
+      () => props.value,
+      (newValue) => {
+        if (newValue) {
+          focus.value = false
+        }
+      })
+
     return {
       nativeElement,
       dropdownElement,
       focus,
       searchedOptions,
       displayedOptions,
+      selectedOptions,
+      fieldWrapperClasses,
+      dropdownClasses,
       focusChangeHandle,
       selectHandle,
       handleDeleteItem,
@@ -188,21 +227,26 @@ export default defineComponent({
       class="vs-native-element"
     />
 
-    <vs-label v-if="label" :required="required" @click="focusChangeHandle"> {{ label }}: </vs-label>
+    <vs-label v-if="label" :required="required" @click="focusChangeHandle"> {{ label }}:</vs-label>
     <vs-field
       :value="value"
       :placeholder="placeholder"
       :selected-display-limit="selectedDisplayLimit"
       :focus="focus"
+      :class="fieldWrapperClasses"
       @click="focusChangeHandle"
       @delete-item="handleDeleteItem"
     />
 
-    <div v-if="focus" ref="dropdownElement" class="vs-dropdown">
-      <vs-search-input v-model="search" />
+    <div ref="dropdownElement" class="vs-dropdown" :class="dropdownClasses">
+      <vs-search-input v-if="searchable" v-model="search" />
 
-      <div class="vs-dropdown-options-list">
-        <vs-selected-options :value="value" @delete-item="handleDeleteItem" />
+      <div v-if="displayedOptions.length || selectedOptions.length" class="vs-dropdown-options-list">
+        <vs-selected-options
+          v-if="multiple"
+          :selected-options="selectedOptions"
+          @delete-item="handleDeleteItem"
+        />
 
         <template v-if="slots.option">
           <div
@@ -227,7 +271,7 @@ export default defineComponent({
 
       <template v-if="!displayedOptions.length">
         <slot v-if="slots.noOptions" name="noOptions"></slot>
-        <div v-else class="vs-no-options">{{ i18n.noResults }}</div>
+        <div v-else class="vs-dropdown-plug">{{ i18n.noResults }}</div>
       </template>
     </div>
   </div>
