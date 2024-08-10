@@ -12,6 +12,10 @@ export default defineComponent({
       valueStaticMultiple: [],
       valueRemoteSingle: null,
       valueRemoteMultiple: [],
+      disabledStaticSingle: false,
+      disabledStaticMultiple: false,
+      disabledRemoteSingle: false,
+      disabledRemoteMultiple: false,
       options: [
         { value: '1', label: 'Russia' },
         { value: '2', label: 'USA' },
@@ -50,23 +54,50 @@ export default defineComponent({
     <!-- static single -->
     <div class="block">
       <div class="block-title">Static single</div>
+
+      <div class="actions">
+        <button @click="() => disabledStaticSingle = !disabledStaticSingle">disable</button>
+      </div>
+
       <div class="logs">
         <div class="logs-item">
           <div class="logs-item--label">value:</div>
           <div class="logs-item--value">{{ valueStaticSingle ?? 'null' }}</div>
         </div>
+
+        <div class="logs-item">
+          <div class="logs-item--label">disabled:</div>
+          <div class="logs-item--value">{{ disabledStaticSingle ?? 'null' }}</div>
+        </div>
       </div>
 
-      <vue-select v-model="valueStaticSingle" :options="options" :searchable="false" required label="Static Single" />
+      <vue-select
+        v-model="valueStaticSingle"
+        :options="options"
+        :searchable="false"
+        :disabled="disabledStaticSingle"
+        required
+        label="Static Single"
+      />
     </div>
 
     <!-- static multiple -->
     <div class="block">
       <div class="block-title">Static multiple</div>
+
+      <div class="actions">
+        <button @click="() => disabledStaticMultiple = !disabledStaticMultiple">disable</button>
+      </div>
+
       <div class="logs">
         <div class="logs-item">
           <div class="logs-item--label">value:</div>
           <div class="logs-item--value">{{ valueStaticMultiple }}</div>
+        </div>
+
+        <div class="logs-item">
+          <div class="logs-item--label">disabled:</div>
+          <div class="logs-item--value">{{ disabledStaticMultiple ?? 'null' }}</div>
         </div>
       </div>
 
@@ -75,6 +106,7 @@ export default defineComponent({
         :options="options"
         :selected-display-limit="5"
         :close-on-select="false"
+        :disabled="disabledStaticMultiple"
         multiple
         label="Static Multiple"
       />
@@ -83,16 +115,27 @@ export default defineComponent({
     <!-- remote single -->
     <div class="block">
       <div class="block-title">Remote single</div>
+
+      <div class="actions">
+        <button @click="() => disabledRemoteSingle = !disabledRemoteSingle">disable</button>
+      </div>
+
       <div class="logs">
         <div class="logs-item">
           <div class="logs-item--label">value:</div>
           <div class="logs-item--value">{{ valueRemoteSingle ?? 'null' }}</div>
+        </div>
+
+        <div class="logs-item">
+          <div class="logs-item--label">disabled:</div>
+          <div class="logs-item--value">{{ disabledRemoteSingle ?? 'null' }}</div>
         </div>
       </div>
 
       <vue-select
         v-model="valueRemoteSingle"
         :remote-function="fetchOptions"
+        :disabled="disabledRemoteSingle"
         remote
         label="Remote Single"
       />
@@ -101,10 +144,20 @@ export default defineComponent({
     <!-- remote multiple -->
     <div class="block">
       <div class="block-title">Remote multiple</div>
+
+      <div class="actions">
+        <button @click="() => disabledRemoteMultiple = !disabledRemoteMultiple">disable</button>
+      </div>
+
       <div class="logs">
         <div class="logs-item">
           <div class="logs-item--label">value:</div>
           <div class="logs-item--value">{{ valueRemoteMultiple ?? 'null' }}</div>
+        </div>
+
+        <div class="logs-item">
+          <div class="logs-item--label">disabled:</div>
+          <div class="logs-item--value">{{ disabledRemoteMultiple ?? 'null' }}</div>
         </div>
       </div>
 
@@ -114,6 +167,7 @@ export default defineComponent({
         :selected-display-limit="2"
         :searchable="false"
         :close-on-select="false"
+        :disabled="disabledRemoteMultiple"
         multiple
         remote
         label="Remote Multiple"
@@ -134,16 +188,35 @@ export default defineComponent({
   font-size: 15px;
 }
 
-.block {
-  padding: 1.2rem;
-  border-radius: 5px;
-  border: 1px solid lightgray;
-}
-
 .block-title {
   font-weight: 600;
   color: #609755;
   margin-bottom: 1rem;
+}
+
+.actions {
+  margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  button {
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    background-color: #5acf2e;
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    padding: 6px 15px;
+    cursor: pointer;
+  }
+}
+
+.block {
+  padding: 1.2rem;
+  border-radius: 5px;
+  border: 1px solid lightgray;
 }
 
 .logs {
@@ -160,7 +233,7 @@ export default defineComponent({
   background-color: #e8f4e5;
 
   & + & {
-    margin-top: 0.5rem;
+    margin-top: 0.1rem;
   }
 }
 

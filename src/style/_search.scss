@@ -14,6 +14,11 @@
   background-color: var(--vs-search-input-background-color);
   border-radius: var(--vs-search-input-border-radius);
   font-size: var(--vs-search-input-font-size);
+  transition: border-color 150ms ease-in-out;
+
+  &:hover {
+    border: var(--vs-search-input-border-width) solid var(--vs-search-input-hovered-border-color);
+  }
 
   &::placeholder {
     color: var(--vs-search-input-palceholder-color);

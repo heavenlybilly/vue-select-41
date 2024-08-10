@@ -8,8 +8,11 @@
 
   // field container
   --vs-field-wrapper-border-color: #dadada;
+  --vs-field-wrapper-hovered-border-color: #b5b5b5;
   --vs-field-wrapper-border-width: 1px;
   --vs-field-wrapper-border-radius: 5px;
+  --vs-field-wrapper-background-color: #fff;
+  --vs-field-wrapper-disabled-background-color: #f4f4f4;
 
   // field
   --vs-field-height-height: 36px;
@@ -23,9 +26,11 @@
   // field value
   --vs-displayed-value-font-size: 0.9rem;
   --vs-displayed-value-color: inherit;
+  --vs-displayed-disabled-value-color: #575757;
   --vs-displayed-value-item-font-size: 0.9rem;
   --vs-displayed-value-item-color: #fff;
   --vs-displayed-value-item-background-color: #5a74f0;
+  --vs-displayed-value-disabled-item-background-color: #c1c1c1;
   --vs-displayed-value-item-border-radius: 3px;
   --vs-displayed-value-item-padding-y: 2px;
   --vs-displayed-value-item-padding-x: 4px;
@@ -74,6 +79,7 @@
   --vs-search-input-padding-x: 0.62rem;
   --vs-search-input-border-width: 1px;
   --vs-search-input-border-color: #dadada;
+  --vs-search-input-hovered-border-color: #b5b5b5;
   --vs-search-input-border-radius: 5px;
   --vs-search-input-background-color: #fff;
   --vs-search-input-font-size: 0.8rem;

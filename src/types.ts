@@ -16,7 +16,7 @@ export type VueSelectRemoteFunction = (search: string | null) => Promise<VueSele
 export interface VueSelectProps {
   // clearable: boolean;
   closeOnSelect: boolean;
-  // disabled?: boolean;
+  disabled: boolean;
   label?: string;
   // labelField: string;
   multiple: boolean;

@@ -1,7 +1,26 @@
 .vs-field-wrapper {
   position: relative;
+  transition: all 150ms ease-in-out;
   border-radius: var(--vs-field-wrapper-border-radius);
   border: var(--vs-field-wrapper-border-width) solid var(--vs-field-wrapper-border-color);
+  background-color: var(--vs-field-wrapper-background-color);
+
+  &:not(.vs-field-wrapper--disabled):hover {
+    border: var(--vs-field-wrapper-border-width) solid var(--vs-field-wrapper-hovered-border-color);
+  }
+
+  &--disabled {
+    pointer-events: none;
+    background-color: var(--vs-field-wrapper-disabled-background-color);
+
+    .vs-displayed-value-item {
+      background-color: var(--vs-displayed-value-disabled-item-background-color);
+    }
+
+    .vs-displayed-value {
+      color: var(--vs-displayed-disabled-value-color);
+    }
+  }
 }
 
 .vs-field {
@@ -14,6 +33,7 @@
   height: var(--vs-field-height-height);
   max-height: var(--vs-field-height-height);
   min-height: var(--vs-field-height-height);
+  background-color: transparent;
 }
 
 .vs-field-arrow-wrapper {
