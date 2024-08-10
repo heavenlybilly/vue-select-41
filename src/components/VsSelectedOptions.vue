@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { TVueSelectValue } from '@/types'
+import { VueSelectValue } from '@/types'
 import { PropType, computed } from 'vue'
 
 const props = defineProps({
   value: {
-    type: [Object, Array] as PropType<TVueSelectValue>,
+    type: [Object, Array] as PropType<VueSelectValue>,
     required: false,
   },
 })

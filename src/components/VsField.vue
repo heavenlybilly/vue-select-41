@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { TVueSelectValue } from '@/types'
+import { VueSelectValue } from '@/types'
 import { PropType, computed } from 'vue'
 import i18n from '@/helpers/i18n'
 
 const props = defineProps({
   value: {
-    type: [Array, Object] as PropType<TVueSelectValue>,
+    type: [Array, Object] as PropType<VueSelectValue>,
     required: false,
   },
   placeholder: {

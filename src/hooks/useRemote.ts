@@ -1,12 +1,12 @@
 import { Ref, ref } from 'vue'
-import { IVueSelectOption, TVueSelectRemoteFunction } from '@/types'
+import { VueSelectOption, VueSelectRemoteFunction } from '@/types'
 
 export function useRemote() {
-  const search: Ref<String | null> = ref(null)
+  const search: Ref<string | null> = ref(null)
   const loading: Ref<Boolean> = ref(false)
-  const remoteOptions: Ref<IVueSelectOption[]> = ref([])
+  const remoteOptions: Ref<VueSelectOption[]> = ref([])
 
-  const fetchOptions = async (remoteFunction: TVueSelectRemoteFunction, search: String | null) => {
+  const fetchOptions = async (remoteFunction: VueSelectRemoteFunction, search: string | null) => {
     loading.value = true
     const items = await remoteFunction(search)
     loading.value = false

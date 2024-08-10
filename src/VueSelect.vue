@@ -5,7 +5,7 @@ import VsOption from '@/components/VsOption.vue'
 import VsSearchInput from '@/components/VsSearchInput.vue'
 import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
 import { PropType, Ref, computed, defineComponent, ref, useSlots, watch } from 'vue'
-import { IVueSelectOption, TVueSelectRemoteFunction, TVueSelectValue } from '@/types'
+import { VueSelectOption, VueSelectRemoteFunction, VueSelectValue } from '@/types'
 import { useInput } from '@/hooks/input/useInput'
 import { useFocus } from '@/hooks/useFocus'
 import { useNativeSelect } from '@/hooks/useNativeSelect'
@@ -41,7 +41,7 @@ export default defineComponent({
       required: false,
     },
     options: {
-      type: Array as PropType<IVueSelectOption[]>,
+      type: Array as PropType<VueSelectOption[]>,
       default: () => [],
     },
     placeholder: {
@@ -53,7 +53,7 @@ export default defineComponent({
       default: false,
     },
     remoteFunction: {
-      type: Function as PropType<TVueSelectRemoteFunction>,
+      type: Function as PropType<VueSelectRemoteFunction>,
       required: false,
     },
     required: {
@@ -61,7 +61,7 @@ export default defineComponent({
       default: false,
     },
     value: {
-      type: [Object, Array] as PropType<TVueSelectValue>,
+      type: [Object, Array] as PropType<VueSelectValue>,
       required: false,
     },
     selectedDisplayLimit: {
@@ -107,7 +107,7 @@ export default defineComponent({
       setFocus(!focus.value)
     }
 
-    const selectHandle = (option: IVueSelectOption) => {
+    const selectHandle = (option: VueSelectOption) => {
       const newValue = selectOption(props.value, option)
       emit('input', newValue)
     }
