@@ -57,7 +57,7 @@ export default {
 
 ## Props
 
-    ### `closeOnSelect`
+### `closeOnSelect`
 Close the dropdown when an option is selected
 
 ```js
