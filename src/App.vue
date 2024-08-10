@@ -74,11 +74,22 @@ export default defineComponent({
       <vue-select
         v-model="valueStaticSingle"
         :options="options"
-        :searchable="false"
         :disabled="disabledStaticSingle"
         required
         label="Static Single"
-      />
+      >
+        <template #noOptions>
+          <div class="custom-class">
+            No results found
+          </div>
+        </template>
+
+        <template #option="{ item, selected}">
+          <div class="item" :class="{ 'item--selected': selected }">
+            {{ item }}
+          </div>
+        </template>
+      </vue-select>
     </div>
 
     <!-- static multiple -->
