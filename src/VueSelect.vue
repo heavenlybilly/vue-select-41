@@ -28,6 +28,10 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     label: {
       type: String,
       required: false,
@@ -119,6 +123,10 @@ export default defineComponent({
       return props.value
     })
 
+    const fieldWrapperClasses = computed(() => ({
+      'vs-field-wrapper--disabled': props.disabled
+    }))
+
     const dropdownClasses = computed(() => ({
       'vs-dropdown--visible': focus.value,
       'vs-dropdown--no-search': !props.searchable,
@@ -126,7 +134,9 @@ export default defineComponent({
     }))
 
     const focusChangeHandle = () => {
-      setFocus(!focus.value)
+      if (!props.disabled) {
+        setFocus(!focus.value)
+      }
     }
 
     const selectHandle = (option: VueSelectOption) => {
@@ -179,6 +189,14 @@ export default defineComponent({
       },
     )
 
+    watch(
+      () => props.value,
+      (newValue) => {
+        if (newValue) {
+          focus.value = false
+        }
+      })
+
     return {
       nativeElement,
       dropdownElement,
@@ -186,6 +204,7 @@ export default defineComponent({
       searchedOptions,
       displayedOptions,
       selectedOptions,
+      fieldWrapperClasses,
       dropdownClasses,
       focusChangeHandle,
       selectHandle,
@@ -214,6 +233,7 @@ export default defineComponent({
       :placeholder="placeholder"
       :selected-display-limit="selectedDisplayLimit"
       :focus="focus"
+      :class="fieldWrapperClasses"
       @click="focusChangeHandle"
       @delete-item="handleDeleteItem"
     />

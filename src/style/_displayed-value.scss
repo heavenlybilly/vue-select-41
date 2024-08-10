@@ -4,11 +4,12 @@
 }
 
 .vs-displayed-value {
+  line-height: 1;
   white-space: nowrap;
   text-overflow: ellipsis;
+  transition: color 150ms ease-in-out;
   font-size: var(--vs-displayed-value-font-size);
   color: var(--vs-displayed-value-color);
-  line-height: 1;
 }
 
 .vs-displayed-value-item {
@@ -17,6 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 150ms ease-in-out;
   font-size: var(--vs-displayed-value-item-font-size);
   padding: var(--vs-displayed-value-item-padding-y) var(--vs-displayed-value-item-padding-x);
   border-radius: var(--vs-displayed-value-item-border-radius);
