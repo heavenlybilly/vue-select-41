@@ -1,19 +1,19 @@
-export type TVueSelectValue = TVueSelectValueItem[] | TVueSelectValueItem | null
-export type TVueSelectSingleValue = TVueSelectValueItem | null
-export type TVueSelectMultipleValue = TVueSelectValueItem[]
+export type VueSelectValue = VueSelectValueItem[] | VueSelectValueItem | null
+export type VueSelectSingleValue = VueSelectValueItem | null
+export type VueSelectMultipleValue = VueSelectValueItem[]
 
-export type TVueSelectValueItem = {
+export type VueSelectValueItem = {
   value: string
   label: string
 }
 
-export interface IVueSelectOption extends TVueSelectValueItem {
+export interface VueSelectOption extends VueSelectValueItem {
   [key: string]: any
 }
 
-export type TVueSelectRemoteFunction = (search: String | null) => Promise<IVueSelectOption[]>
+export type VueSelectRemoteFunction = (search: string | null) => Promise<VueSelectOption[]>
 
-export interface IVueSelectProps {
+export interface VueSelectProps {
   // clearable: boolean;
   closeOnSelect: boolean;
   // disabled?: boolean;
@@ -21,14 +21,14 @@ export interface IVueSelectProps {
   // labelField: string;
   multiple: boolean;
   name?: string;
-  options: IVueSelectOption[];
+  options: VueSelectOption[];
   placeholder?: string;
   // perPage: number;
   remote: boolean;
-  remoteFunction?: (search: String | null) => Promise<IVueSelectOption[]>;
+  remoteFunction?: (search: string | null) => Promise<VueSelectOption[]>;
   required: boolean;
   // valueField: string;
-  value?: TVueSelectValue;
+  value?: VueSelectValue;
   // hasPagination: boolean;
   selectedDisplayLimit: number;
 }
