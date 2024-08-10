@@ -2,6 +2,8 @@
 import { VueSelectValue } from '@/types'
 import { PropType, computed } from 'vue'
 import i18n from '@/helpers/i18n'
+import chevronDownIcon from '@/assets/icons/chevron-down.svg'
+import crossIcon from '@/assets/icons/cross.svg'
 
 const props = defineProps({
   value: {
@@ -51,7 +53,7 @@ const selectedRecordsTitle = computed(() => {
 })
 
 const arrowClass = computed(() => ({
-  'vs-chevron--up': props.focus,
+  'vs-field-arrow--up': props.focus,
 }))
 
 const displayedPlaceholder = computed(() => {
@@ -90,7 +92,9 @@ const handleDeleteItem = (value: String) => {
             class="vs-displayed-value-item"
           >
             <span>{{ item.label }}</span>
-            <span class="vs--cross" @click.stop="handleDeleteItem(item.value)"></span>
+            <div class="vs-displayed-value-item-cross" @click.stop="handleDeleteItem(item.value)">
+              <img :src="crossIcon" alt="">
+            </div>
           </div>
         </template>
       </div>
@@ -98,8 +102,10 @@ const handleDeleteItem = (value: String) => {
         {{ displayedPlaceholder }}
       </div>
     </div>
-    <div class="vs-field-arrow">
-      <div :class="arrowClass" class="vs-chevron"></div>
+    <div class="vs-field-arrow-wrapper">
+      <div class="vs-field-arrow" :class="arrowClass">
+        <img :src="chevronDownIcon" alt="">
+      </div>
     </div>
   </div>
 </template>
