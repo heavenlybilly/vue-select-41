@@ -16,7 +16,7 @@
   min-height: var(--vs-field-height-height);
 }
 
-.vs-field-arrow {
+.vs-field-arrow-wrapper {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -25,6 +25,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.vs-field-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 12px;
+    height: 12px;
+    transition: all 150ms ease-in-out;
+  }
+
+  &--up {
+    img {
+      transform: rotate(180deg);
+    }
+  }
 }
 
 .vs-field-placeholder {
