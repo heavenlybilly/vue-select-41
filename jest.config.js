@@ -1,9 +1,10 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
   transform: {
     '^.+\\.vue$': 'vue-jest',
-    '^.+\\.tsx?$': ['ts-jest', {}],
+    '^.+\\.ts$': ['ts-jest', {}],
+    '^.+\\.js$': 'babel-jest',
   },
   collectCoverage: true,
   coverageDirectory: 'coverage',
