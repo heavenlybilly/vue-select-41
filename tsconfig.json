@@ -43,7 +43,8 @@
     "outDir": "dist",
     "types": [
       "node",
-      "vite/client"
+      "vite/client",
+      "jest"
     ]
   },
   "include": [
