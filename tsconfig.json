@@ -12,30 +12,6 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "~components/*": [
-        "src/components/*"
-      ],
-      "~helpers/*": [
-        "src/helpers/*"
-      ],
-      "~hooks/*": [
-        "src/hooks/*"
-      ],
-      "~i18n/*": [
-        "src/i18n/*"
-      ],
-      "~/*": [
-        "src/*"
-      ],
-      "~conf/*": [
-        "src/conf/*"
-      ],
-      "~styles/*": [
-        "src/styles/*"
-      ],
-      "~scss/*": [
-        "src/scss/*"
       ]
     },
     "declaration": true,
@@ -43,13 +19,13 @@
     "outDir": "dist",
     "types": [
       "node",
-      "vite/client"
+      "vite/client",
+      "jest"
     ]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.tsx",
     "src/**/*.vue"
   ]
 }
