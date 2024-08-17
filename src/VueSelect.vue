@@ -68,13 +68,13 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
-    value: {
-      type: [Object, Array] as PropType<VueSelectValue>,
-      required: false,
-    },
     selectedDisplayLimit: {
       type: Number,
       default: 3,
+    },
+    value: {
+      type: [Object, Array] as PropType<VueSelectValue>,
+      required: false,
     },
   },
   emits: ['input', 'dropdown:opened', 'dropdown:closed'],
