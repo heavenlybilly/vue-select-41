@@ -1,5 +1,4 @@
-# Vue Select 41 `v0.0.1`
-
+# Vue Select 41
 Vue Select 41 is a component that provides a wrapper around the HTML select element with enhanced capabilities. This component supports:
 
 - Searching
