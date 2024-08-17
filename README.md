@@ -86,6 +86,19 @@ label: {
 }
 ```
 
+
+### `locale`
+The `locale` prop is used to set the interface language of the component, allowing the texts and formatting to be 
+adapted to the desired language. This prop accepts a string value corresponding to the language code.
+Available values: `en`, `ru`, `de` and `fr`.
+
+```js
+locale: {
+type: String,
+default: 'en',
+},
+```
+
 ### `multiple`
 Allow multiple selections.
 

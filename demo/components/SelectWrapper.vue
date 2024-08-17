@@ -34,6 +34,10 @@ const params = ref({
     value: props.title,
     type: String
   },
+  locale: {
+    value: 'ru',
+    type: String
+  },
   name: {
     value: null,
     type: String
@@ -119,6 +123,7 @@ const fetchOptions = async (search?: string | null) => {
       :close-on-select="params.closeOnSelect.value"
       :disabled="params.disabled.value"
       :label="params.label.value"
+      :locale="params.locale.value"
       :multiple="props.multiple"
       :name="params.name.value"
       :options="options"
