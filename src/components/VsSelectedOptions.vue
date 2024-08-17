@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { VueSelectValueItem } from '@/types'
 import { PropType } from 'vue'
+import { VueSelectTranslation, VueSelectValueItem } from '@/types'
 
 const props = defineProps({
   selectedOptions: {
     type: Array as PropType<VueSelectValueItem[]>,
+    required: true,
+  },
+  translation: {
+    type: Object as PropType<VueSelectTranslation>,
     required: true,
   },
 })
@@ -18,7 +22,7 @@ const handleDeleteItem = (value: String) => {
 
 <template>
   <div v-if="selectedOptions.length">
-    <div class="vs-dropdown-selected-options-title">Выбранные значения:</div>
+    <div class="vs-dropdown-selected-options-title">{{ props.translation.selectedRecordsTitle }}:</div>
 
     <!-- todo: add slot -->
     <div
@@ -30,7 +34,7 @@ const handleDeleteItem = (value: String) => {
       {{ option.label }}
     </div>
 
-    <div class="vs-dropdown-selected-options-divider"/>
+    <div class="vs-dropdown-selected-options-divider" />
   </div>
 </template>
 

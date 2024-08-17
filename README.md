@@ -1,5 +1,4 @@
-# Vue Select 41 `v0.0.1`
-
+# Vue Select 41
 Vue Select 41 is a component that provides a wrapper around the HTML select element with enhanced capabilities. This component supports:
 
 - Searching
@@ -87,6 +86,19 @@ label: {
 }
 ```
 
+
+### `locale`
+The `locale` prop is used to set the interface language of the component, allowing the texts and formatting to be 
+adapted to the desired language. This prop accepts a string value corresponding to the language code.
+Available values: `en`, `ru`, `de` and `fr`.
+
+```js
+locale: {
+type: String,
+default: 'en',
+},
+```
+
 ### `multiple`
 Allow multiple selections.
 
@@ -96,6 +108,10 @@ multiple: {
   default: false,
 }
 ```
+
+<div style="background-color: #ffe9d2; border-left: 6px solid #ff8800; padding: 10px; margin: 10px 0; border-radius: 2px;">
+  <strong>Warning:</strong> Modifying this prop after the component has been mounted will have no effect
+</div>
 
 ### `name`
 Name attribute for the select element.
@@ -168,16 +184,6 @@ searchable: {
 }
 ```
 
-### `value`
-Current selected value(s). Depending on the select type (single/multiple), the value can be an object `{ value: string, label: string }` or an array of such objects. 
-
-```js
-value: {
-  type: [Object, Array],
-  required: false,
-}
-```
-
 ### `selectedDisplayLimit`
 Limit the number of selected items displayed.
 
@@ -185,6 +191,30 @@ Limit the number of selected items displayed.
 selectedDisplayLimit: {
   type: Number,
   default: 3,
+}
+```
+
+### `showSelected`
+Display selected options in the dropdown.
+
+```js
+showSelected: {
+  type: Boolean,
+  default: true,
+}
+```
+
+<div style="background-color: #d2feff; border-left: 6px solid #00a6ff; padding: 10px; margin: 10px 0; border-radius: 2px;">
+  <strong>Note:</strong> This prop takes effect only when the select input is in multiple mode
+</div>
+
+### `value`
+Current selected value(s). Depending on the select type (single/multiple), the value can be an object `{ value: string, label: string }` or an array of such objects. 
+
+```js
+value: {
+  type: [Object, Array],
+  required: false,
 }
 ```
 

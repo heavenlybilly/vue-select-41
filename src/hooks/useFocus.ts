@@ -1,6 +1,9 @@
 import { Ref, onMounted, onUnmounted, ref } from 'vue'
 
-export function useFocus(nonBlurElements: Ref<HTMLElement | null>[]) {
+export function useFocus(
+  dropdownElement: Ref<HTMLElement | null>,
+  controlElement: Ref<HTMLElement | null>,
+) {
   const focus = ref(false)
 
   const setFocus = (value: boolean) => {
@@ -8,14 +11,16 @@ export function useFocus(nonBlurElements: Ref<HTMLElement | null>[]) {
   }
 
   const handleClickOutside = (event: Event) => {
-    const isClickOutside = nonBlurElements.every((ref) => {
-      const element = ref.value
-      return !element || !element.contains(event.target as Node)
-    })
+    const isClickedControl =
+      !!controlElement.value && controlElement.value.contains(event.target as Node)
+    const isClickedDropdown =
+      !!dropdownElement.value && dropdownElement.value.contains(event.target as Node)
 
-    if (isClickOutside) {
-      focus.value = false
+    if (isClickedControl || isClickedDropdown || !focus.value) {
+      return
     }
+
+    focus.value = false
   }
 
   onMounted(() => {

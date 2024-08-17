@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { VueSelectValue } from '@/types'
-import { PropType, computed } from 'vue'
-import i18n from '@/helpers/i18n'
+import { PropType, computed, inject } from 'vue'
 import chevronDownIcon from '@/assets/icons/chevron-down.svg'
 import crossIcon from '@/assets/icons/cross.svg'
+import { VueSelectTranslation, VueSelectValue } from '@/types'
 
 const props = defineProps({
   value: {
@@ -20,6 +19,10 @@ const props = defineProps({
   },
   selectedDisplayLimit: {
     type: Number,
+    required: true,
+  },
+  translation: {
+    type: Object as PropType<VueSelectTranslation>,
     required: true,
   },
 })
@@ -48,7 +51,7 @@ const hasValue = computed(() => {
 
 const selectedRecordsTitle = computed(() => {
   if (Array.isArray(props.value)) {
-    return i18n.selected(props.value.length)
+    return props.translation.recordsSelected(props.value.length)
   }
 })
 
@@ -62,10 +65,10 @@ const displayedPlaceholder = computed(() => {
   }
 
   if (Array.isArray(props.value)) {
-    return i18n.placeholder.multiple
+    return props.translation.placeholder.multiple
   }
 
-  return i18n.placeholder.single
+  return props.translation.placeholder.single
 })
 
 const handleClick = () => {
@@ -78,22 +81,21 @@ const handleDeleteItem = (value: String) => {
 </script>
 
 <template>
-  <div class="vs-field-wrapper" @click.stop="handleClick">
+  <div class="vs-field-wrapper" @click="handleClick">
     <div class="vs-field">
       <div v-if="hasValue" class="vs-displayed-value-wrapper">
         <div v-if="singleValue" class="vs-displayed-value">{{ singleValue.label }}</div>
-        <div class="vs-displayed-value" v-else-if="multipleValue.length > props.selectedDisplayLimit">
+        <div
+          class="vs-displayed-value"
+          v-else-if="multipleValue.length > props.selectedDisplayLimit"
+        >
           {{ selectedRecordsTitle }}
         </div>
         <template v-else>
-          <div
-            v-for="(item, index) of multipleValue"
-            :key="index"
-            class="vs-displayed-value-item"
-          >
+          <div v-for="(item, index) of multipleValue" :key="index" class="vs-displayed-value-item">
             <span>{{ item.label }}</span>
-            <div class="vs-displayed-value-item-cross" @click.stop="handleDeleteItem(item.value)">
-              <img :src="crossIcon" alt="">
+            <div class="vs-displayed-value-item-cross" @click="handleDeleteItem(item.value)">
+              <img :src="crossIcon" alt="" />
             </div>
           </div>
         </template>
@@ -104,7 +106,7 @@ const handleDeleteItem = (value: String) => {
     </div>
     <div class="vs-field-arrow-wrapper">
       <div class="vs-field-arrow" :class="arrowClass">
-        <img :src="chevronDownIcon" alt="">
+        <img :src="chevronDownIcon" alt="" />
       </div>
     </div>
   </div>
