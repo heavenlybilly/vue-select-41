@@ -158,6 +158,10 @@ export default defineComponent({
         const newValue = deleteItem(props.value, value)
         emit('input', newValue ?? null)
       }
+
+      if (props.closeOnSelect) {
+        setFocus(false)
+      }
     }
 
     watch(

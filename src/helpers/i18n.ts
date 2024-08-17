@@ -5,6 +5,7 @@ const locale = ru
 
 export default {
   noResults: locale.noResults,
+  selectedItemsTitle: locale.selectedItemsTitle,
   selected: (number: number) => {
     const selected = pronounce(
       number,

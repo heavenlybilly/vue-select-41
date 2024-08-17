@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { VueSelectValueItem } from '@/types'
 import { PropType } from 'vue'
+import i18n from '../helpers/i18n'
 
 const props = defineProps({
   selectedOptions: {
@@ -18,7 +19,7 @@ const handleDeleteItem = (value: String) => {
 
 <template>
   <div v-if="selectedOptions.length">
-    <div class="vs-dropdown-selected-options-title">Выбранные значения:</div>
+    <div class="vs-dropdown-selected-options-title">{{ i18n.selectedItemsTitle }}:</div>
 
     <!-- todo: add slot -->
     <div
