@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch-all"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.25.3",
