@@ -1,5 +1,6 @@
 export default {
   noResults: 'Ничего не найдено',
+  selectedItemsTitle: 'Выбранные записи',
   selected: {
     one: 'Выбрана',
     two: 'Выбрано',

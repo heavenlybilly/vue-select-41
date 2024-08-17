@@ -92,7 +92,7 @@ const handleDeleteItem = (value: String) => {
             class="vs-displayed-value-item"
           >
             <span>{{ item.label }}</span>
-            <div class="vs-displayed-value-item-cross" @click.stop="handleDeleteItem(item.value)">
+            <div class="vs-displayed-value-item-cross" @click="handleDeleteItem(item.value)">
               <img :src="crossIcon" alt="">
             </div>
           </div>

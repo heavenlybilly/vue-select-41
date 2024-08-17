@@ -182,7 +182,7 @@ selectedDisplayLimit: {
 ```
 
 ### `showSelected`
-Display selected options in the dropdown when the select input is set to multiple.
+Display selected options in the dropdown.
 
 ```js
 showSelected: {
@@ -192,7 +192,7 @@ showSelected: {
 ```
 
 <div style="background-color: #d2feff; border-left: 6px solid #00a6ff; padding: 10px; margin: 10px 0; border-radius: 2px;">
-  <strong>Note:</strong>This prop takes effect only when the select input is in multiple mode
+  <strong>Note:</strong> This prop takes effect only when the select input is in multiple mode
 </div>
 
 ### `value`
