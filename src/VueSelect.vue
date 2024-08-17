@@ -72,6 +72,10 @@ export default defineComponent({
       type: Number,
       default: 3,
     },
+    showSelected: {
+      type: Boolean,
+      default: true,
+    },
     value: {
       type: [Object, Array] as PropType<VueSelectValue>,
       required: false,
@@ -248,7 +252,7 @@ export default defineComponent({
         class="vs-dropdown-options-list"
       >
         <vs-selected-options
-          v-if="multiple"
+          v-if="multiple && showSelected"
           :selected-options="selectedOptions"
           @delete-item="handleDeleteItem"
         />
