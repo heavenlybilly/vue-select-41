@@ -1,7 +1,7 @@
 {
   "name": "vue-select-41",
   "description": "Select component for Vue 2.7",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "homepage": "https://github.com/heavenlybilly/vue-select-41",
   "main": "dist/vue-select-41.umd.js",
