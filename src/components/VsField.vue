@@ -78,7 +78,7 @@ const handleDeleteItem = (value: String) => {
 </script>
 
 <template>
-  <div class="vs-field-wrapper" @click.stop="handleClick">
+  <div class="vs-field-wrapper" @click="handleClick">
     <div class="vs-field">
       <div v-if="hasValue" class="vs-displayed-value-wrapper">
         <div v-if="singleValue" class="vs-displayed-value">{{ singleValue.label }}</div>

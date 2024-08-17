@@ -16,8 +16,7 @@ coverage
 
 # dev files
 index.html
-src/main.ts
-src/App.vue
+demo/
 .prettierrc.json
 
 # npm configuration files

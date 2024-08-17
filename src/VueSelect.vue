@@ -68,24 +68,25 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
-    value: {
-      type: [Object, Array] as PropType<VueSelectValue>,
-      required: false,
-    },
     selectedDisplayLimit: {
       type: Number,
       default: 3,
+    },
+    value: {
+      type: [Object, Array] as PropType<VueSelectValue>,
+      required: false,
     },
   },
   emits: ['input', 'dropdown:opened', 'dropdown:closed'],
   setup(props, { emit }) {
     const nativeElement: Ref<HTMLSelectElement | null> = ref(null)
+    const controlElement: Ref<HTMLElement | null> = ref(null)
     const dropdownElement: Ref<HTMLElement | null> = ref(null)
 
     useWarnings(props)
 
     const slots = useSlots()
-    const { focus, setFocus } = useFocus([props.closeOnSelect ? ref(null) : dropdownElement])
+    const { focus, setFocus } = useFocus(dropdownElement, controlElement)
     const { search, remoteOptions, fetchOptions } = useRemote()
     const { selectOption, deleteItem } = useInput(props.multiple)
     const { syncValues } = useNativeSelect()
@@ -124,7 +125,7 @@ export default defineComponent({
     })
 
     const fieldWrapperClasses = computed(() => ({
-      'vs-field-wrapper--disabled': props.disabled
+      'vs-field-wrapper--disabled': props.disabled,
     }))
 
     const dropdownClasses = computed(() => ({
@@ -133,15 +134,19 @@ export default defineComponent({
       'vs-dropdown--no-selected': !selectedOptions.value.length,
     }))
 
-    const focusChangeHandle = () => {
+    const handleFocusChange = () => {
       if (!props.disabled) {
         setFocus(!focus.value)
       }
     }
 
-    const selectHandle = (option: VueSelectOption) => {
+    const handleSelect = (option: VueSelectOption) => {
       const newValue = selectOption(props.value, option)
       emit('input', newValue)
+
+      if (props.closeOnSelect) {
+        setFocus(false)
+      }
     }
 
     const handleDeleteItem = (value: String) => {
@@ -189,16 +194,9 @@ export default defineComponent({
       },
     )
 
-    watch(
-      () => props.value,
-      (newValue) => {
-        if (newValue) {
-          focus.value = false
-        }
-      })
-
     return {
       nativeElement,
+      controlElement,
       dropdownElement,
       focus,
       searchedOptions,
@@ -206,8 +204,8 @@ export default defineComponent({
       selectedOptions,
       fieldWrapperClasses,
       dropdownClasses,
-      focusChangeHandle,
-      selectHandle,
+      handleFocusChange,
+      handleSelect,
       handleDeleteItem,
       slots,
       search,
@@ -227,21 +225,28 @@ export default defineComponent({
       class="vs-native-element"
     />
 
-    <vs-label v-if="label" :required="required" @click="focusChangeHandle"> {{ label }}:</vs-label>
-    <vs-field
-      :value="value"
-      :placeholder="placeholder"
-      :selected-display-limit="selectedDisplayLimit"
-      :focus="focus"
-      :class="fieldWrapperClasses"
-      @click="focusChangeHandle"
-      @delete-item="handleDeleteItem"
-    />
+    <div ref="controlElement">
+      <vs-label v-if="label" :required="required" @click="handleFocusChange">
+        {{ label }}:</vs-label
+      >
+      <vs-field
+        :value="value"
+        :placeholder="placeholder"
+        :selected-display-limit="selectedDisplayLimit"
+        :focus="focus"
+        :class="fieldWrapperClasses"
+        @click="handleFocusChange"
+        @delete-item="handleDeleteItem"
+      />
+    </div>
 
     <div ref="dropdownElement" class="vs-dropdown" :class="dropdownClasses">
       <vs-search-input v-if="searchable" v-model="search" />
 
-      <div v-if="displayedOptions.length || selectedOptions.length" class="vs-dropdown-options-list">
+      <div
+        v-if="displayedOptions.length || selectedOptions.length"
+        class="vs-dropdown-options-list"
+      >
         <vs-selected-options
           v-if="multiple"
           :selected-options="selectedOptions"
@@ -252,7 +257,7 @@ export default defineComponent({
           <div
             v-for="(option, index) of displayedOptions"
             :key="`option-${index}`"
-            @click="selectHandle(option)"
+            @click="handleSelect(option)"
           >
             <slot name="option" :item="option" :selected="option.selected"></slot>
           </div>
@@ -262,7 +267,7 @@ export default defineComponent({
             v-for="(option, index) of displayedOptions"
             :key="`option-${index}`"
             :selected="option.selected"
-            @click="selectHandle(option)"
+            @click="handleSelect(option)"
           >
             {{ option.label }}
           </vs-option>
