@@ -18,6 +18,7 @@ export interface VueSelectProps {
   closeOnSelect: boolean;
   disabled: boolean;
   label?: string;
+  locale: VueSelectLocale;
   // labelField: string;
   multiple: boolean;
   name?: string;
@@ -28,8 +29,21 @@ export interface VueSelectProps {
   remoteFunction?: (search: string | null) => Promise<VueSelectOption[]>;
   required: boolean;
   searchable: boolean;
+  selectedDisplayLimit: number;
+  showSelected: boolean;
   // valueField: string;
   value?: VueSelectValue;
-  // hasPagination: boolean;
-  selectedDisplayLimit: number;
+  // paginate: boolean;
+}
+
+export type VueSelectLocale = 'en' | 'ru' | 'de' | 'fr'
+export type VueSelectTranslation = {
+  noResults: string,
+  selectedRecordsTitle: string,
+  recordsSelected: (count: number) => string,
+  placeholder: {
+    single: string,
+    multiple: string,
+    search: string,
+  }
 }
