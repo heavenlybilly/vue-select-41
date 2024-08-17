@@ -171,16 +171,6 @@ searchable: {
 }
 ```
 
-### `value`
-Current selected value(s). Depending on the select type (single/multiple), the value can be an object `{ value: string, label: string }` or an array of such objects. 
-
-```js
-value: {
-  type: [Object, Array],
-  required: false,
-}
-```
-
 ### `selectedDisplayLimit`
 Limit the number of selected items displayed.
 
@@ -188,6 +178,30 @@ Limit the number of selected items displayed.
 selectedDisplayLimit: {
   type: Number,
   default: 3,
+}
+```
+
+### `showSelected`
+Display selected options in the dropdown when the select input is set to multiple.
+
+```js
+showSelected: {
+  type: Boolean,
+  default: true,
+}
+```
+
+<div style="background-color: #d2feff; border-left: 6px solid #00a6ff; padding: 10px; margin: 10px 0; border-radius: 2px;">
+  <strong>Note:</strong>This prop takes effect only when the select input is in multiple mode
+</div>
+
+### `value`
+Current selected value(s). Depending on the select type (single/multiple), the value can be an object `{ value: string, label: string }` or an array of such objects. 
+
+```js
+value: {
+  type: [Object, Array],
+  required: false,
 }
 ```
 

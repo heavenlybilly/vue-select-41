@@ -58,6 +58,10 @@ const params = ref({
     value: 3,
     type: Number
   },
+  showSelected: {
+    value: true,
+    type: Boolean,
+  },
   value: {
     value: props.multiple ? [] : null,
     type: [String, Array],
@@ -123,6 +127,7 @@ const fetchOptions = async (search?: string | null) => {
       :remote-function="fetchOptions"
       :searchable="params.searchable.value"
       :selected-display-limit="+params.selectedDisplayLimit.value"
+      :show-selected="params.showSelected.value"
       :required="params.required.value"
     >
     </vue-select>
