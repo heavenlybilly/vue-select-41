@@ -12,30 +12,6 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "~components/*": [
-        "src/components/*"
-      ],
-      "~helpers/*": [
-        "src/helpers/*"
-      ],
-      "~hooks/*": [
-        "src/hooks/*"
-      ],
-      "~i18n/*": [
-        "src/i18n/*"
-      ],
-      "~/*": [
-        "src/*"
-      ],
-      "~conf/*": [
-        "src/conf/*"
-      ],
-      "~styles/*": [
-        "src/styles/*"
-      ],
-      "~scss/*": [
-        "src/scss/*"
       ]
     },
     "declaration": true,
@@ -50,7 +26,6 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.tsx",
     "src/**/*.vue"
   ]
 }
