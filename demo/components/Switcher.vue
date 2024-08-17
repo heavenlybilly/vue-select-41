@@ -11,7 +11,7 @@ const props = defineProps({
 const emits = defineEmits(['input'])
 
 const label = computed(() => {
-  return props.value ? 'on' : 'off'
+  return props.value ? 'true' : 'false'
 })
 
 const styles = computed(() => ({

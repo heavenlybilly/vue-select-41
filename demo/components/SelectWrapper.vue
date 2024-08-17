@@ -19,6 +19,8 @@ const props = defineProps({
   },
 })
 
+const active = ref(true)
+
 const params = ref({
   closeOnSelect: {
     value: true,
@@ -86,6 +88,12 @@ const fetchOptions = async (search?: string | null) => {
   <div class="block">
     <div class="block-title">{{ props.title }}</div>
 
+    <div class="actions">
+      <button @click="() => active = !active">
+        {{ active ? 'active' : 'not active' }}
+      </button>
+    </div>
+
     <div class="logs">
       <div v-for="param in paramsKeys" :key="param" class="logs-item">
         <div class="logs-item--label">{{ param }}:</div>
@@ -102,6 +110,7 @@ const fetchOptions = async (search?: string | null) => {
     </div>
 
     <vue-select
+      v-if="active"
       v-model="params.value.value"
       :close-on-select="params.closeOnSelect.value"
       :disabled="params.disabled.value"
@@ -128,7 +137,7 @@ const fetchOptions = async (search?: string | null) => {
 }
 
 .actions {
-  margin-bottom: 8px;
+  margin-bottom: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -137,8 +146,7 @@ const fetchOptions = async (search?: string | null) => {
     outline: none;
     border: none;
     border-radius: 5px;
-    background-color: #5acf2e;
-    font-weight: 600;
+    background-color: #5eb629;
     color: #fff;
     font-size: 14px;
     padding: 6px 15px;
