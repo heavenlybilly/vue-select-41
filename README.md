@@ -109,10 +109,6 @@ multiple: {
 }
 ```
 
-<div style="background-color: #ffe9d2; border-left: 6px solid #ff8800; padding: 10px; margin: 10px 0; border-radius: 2px;">
-  <strong>Warning:</strong> Modifying this prop after the component has been mounted will have no effect
-</div>
-
 ### `name`
 Name attribute for the select element.
 

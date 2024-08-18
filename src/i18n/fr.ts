@@ -1,6 +1,6 @@
-import { VueSelectTranslation } from '@/types'
+import { VueSelectI18n } from '@/types'
 
-const translation: VueSelectTranslation = {
+const i18n: VueSelectI18n = {
   noResults: "Aucun résultat trouvé",
   selectedRecordsTitle: "Enregistrements sélectionnés",
   recordsSelected: (count: number) => {
@@ -14,4 +14,4 @@ const translation: VueSelectTranslation = {
   }
 };
 
-export default translation
+export default i18n

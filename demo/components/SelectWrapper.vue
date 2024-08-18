@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import VueSelect from '../../src/VueSelect.vue'
-import Switcher from './Switcher.vue'
 import { computed, ref } from 'vue'
+import VueSelect from '../../src/VueSelect.vue'
 import { options } from '../conf/options'
+import Switcher from './Switcher.vue'
 
 const props = defineProps({
-  multiple: {
+  initialMultiple: {
     type: Boolean,
     required: true,
   },
@@ -21,6 +21,34 @@ const props = defineProps({
 
 const active = ref(true)
 
+const remoteFunctions = {
+  heroes: async (search?: string | null) => {
+    const response = await fetch('https://mocki.io/v1/a42a5149-62c4-425c-95a0-ec7b43c29304')
+    const items: { id: number; label: string }[] = await response.json()
+
+    return items.filter((item) => {
+      if (!search) {
+        return true
+      }
+
+      return item.label.toLowerCase().includes(search.toLowerCase())
+    })
+  },
+  countries: async (search?: string | null) => {
+    const response = await fetch('https://mocki.io/v1/0d4cd626-5b76-41c8-a81e-3080ef904f60')
+    const data: { options: { id: number; label: string }[] } = await response.json()
+
+    const items = data.options
+    return items.filter((item) => {
+      if (!search) {
+        return true
+      }
+
+      return item.label.toLowerCase().includes(search.toLowerCase())
+    })
+  },
+}
+
 const params = ref({
   closeOnSelect: {
     value: true,
@@ -32,23 +60,32 @@ const params = ref({
   },
   label: {
     value: props.title,
-    type: String
+    type: String,
   },
   locale: {
     value: 'ru',
-    type: String
+    type: String,
+  },
+  multiple: {
+    value: props.initialMultiple,
+    type: Boolean,
   },
   name: {
     value: null,
-    type: String
+    type: String,
   },
   placeholder: {
     value: null,
-    type: String
+    type: String,
   },
   remote: {
     value: props.initialRemote,
     type: Boolean,
+  },
+  remoteFunction: {
+    value: 'heroes',
+    options: ['heroes', 'countries'],
+    type: 'Select',
   },
   required: {
     value: false,
@@ -60,14 +97,14 @@ const params = ref({
   },
   selectedDisplayLimit: {
     value: 3,
-    type: Number
+    type: Number,
   },
   showSelected: {
     value: true,
     type: Boolean,
   },
   value: {
-    value: props.multiple ? [] : null,
+    value: props.initialMultiple ? [] : null,
     type: [String, Array],
   },
 })
@@ -76,19 +113,9 @@ const paramsKeys = computed(() => {
   return Object.keys(params.value)
 })
 
-const fetchOptions = async (search?: string | null) => {
-  const response = await fetch('https://mocki.io/v1/0d4cd626-5b76-41c8-a81e-3080ef904f60')
-  const data: { options: { id: number; label: string }[] } = await response.json()
-
-  const items = data.options
-  return items
-    .filter((item) => {
-      if (!search) {
-        return true
-      }
-
-      return item.label.toLowerCase().includes(search.toLowerCase())
-    })
+const handleSelect = (e: Event, param: string) => {
+  const target = e.target as HTMLSelectElement
+  params.value[param].value = target.value
 }
 </script>
 
@@ -97,15 +124,17 @@ const fetchOptions = async (search?: string | null) => {
     <div class="block-title">{{ props.title }}</div>
 
     <div class="actions">
-      <button @click="() => active = !active">
+      <button @click="() => (active = !active)">
         {{ active ? 'active' : 'not active' }}
       </button>
     </div>
 
-    <div class="logs">
+    <div class="logs" @click.stop>
       <div v-for="param in paramsKeys" :key="param" class="logs-item">
         <div class="logs-item--label">{{ param }}:</div>
-        <div class="logs-item--value">{{ params[param].value }}</div>
+        <div v-if="params[param].type !== 'Select'" class="logs-item--value">
+          {{ params[param].value }}
+        </div>
 
         <switcher
           v-if="params[param].type === Boolean"
@@ -113,7 +142,20 @@ const fetchOptions = async (search?: string | null) => {
           v-model="params[param].value"
         />
 
-        <input v-if="[String, Number].includes(params[param].type)" v-model="params[param].value" class="input" type="text" />
+        <input
+          v-if="[String, Number].includes(params[param].type)"
+          v-model="params[param].value"
+          class="input"
+          type="text"
+        />
+
+        <select
+          v-if="params[param].type === 'Select'"
+          class="select"
+          @input="(e) => handleSelect(e, param)"
+        >
+          <option v-for="option of params[param].options" :value="option">{{ option }}</option>
+        </select>
       </div>
     </div>
 
@@ -124,12 +166,12 @@ const fetchOptions = async (search?: string | null) => {
       :disabled="params.disabled.value"
       :label="params.label.value"
       :locale="params.locale.value"
-      :multiple="props.multiple"
+      :multiple="params.multiple.value"
       :name="params.name.value"
       :options="options"
       :placeholder="params.placeholder.value"
       :remote="params.remote.value"
-      :remote-function="fetchOptions"
+      :remote-function="remoteFunctions[params.remoteFunction.value]"
       :searchable="params.searchable.value"
       :selected-display-limit="+params.selectedDisplayLimit.value"
       :show-selected="params.showSelected.value"
@@ -216,5 +258,17 @@ const fetchOptions = async (search?: string | null) => {
   outline: none;
   padding: 0.2rem 0.5rem;
   width: 100px;
+}
+
+.select {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  border-radius: 2px;
+  border: none;
+  outline: none;
+  padding: 0.2rem 0.5rem;
+  width: 116px;
+  background-color: #fff;
 }
 </style>

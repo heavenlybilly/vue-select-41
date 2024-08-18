@@ -1,24 +1,22 @@
 <script setup lang="ts">
-import { PropType, Ref, computed, onMounted, ref } from 'vue'
-import { VueSelectTranslation } from '@/types'
+import { PropType, Ref, computed, inject, onMounted, ref } from 'vue'
+import { VueSelectI18n } from '@/types'
 
 const props = defineProps({
   value: {
     type: String as PropType<String | null>,
     required: false,
   },
-  translation: {
-    type: Object as PropType<VueSelectTranslation>,
-    required: true,
-  },
 })
 
 const emits = defineEmits(['input'])
 
-const searchInputElement: Ref<HTMLElement | null> = ref(null)
+const i18n = inject('i18n') as Ref<VueSelectI18n>
+
+const inputRef: Ref<HTMLElement | null> = ref(null)
 
 const searchPlaceholder = computed(() => {
-  return props.translation.placeholder.search
+  return i18n.value.placeholder.search
 })
 
 const handleInput = (e: Event) => {
@@ -27,8 +25,8 @@ const handleInput = (e: Event) => {
 }
 
 onMounted(() => {
-  if (searchInputElement.value) {
-    searchInputElement.value.focus()
+  if (inputRef.value) {
+    inputRef.value.focus()
   }
 })
 </script>
@@ -37,7 +35,7 @@ onMounted(() => {
   <div class="vs-search">
     <input
       :value="props.value"
-      ref="searchInputElement"
+      ref="inputRef"
       class="vs-search-input"
       type="text"
       :placeholder="searchPlaceholder"
