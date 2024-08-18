@@ -9,11 +9,13 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
+    "prebuild": "rm -rf ./node_modules/@types/react",
     "build": "vite build",
     "test": "jest",
     "test:watch": "jest --watch-all",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "check:types": "npx vue-tsc --noEmit"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
