@@ -1,7 +1,7 @@
-import { VueSelectTranslation } from '@/types'
+import { VueSelectI18n } from '@/types'
 import pronounce from '@/helpers/pronounce'
 
-const translation: VueSelectTranslation = {
+const i18n: VueSelectI18n = {
   noResults: 'Ничего не найдено',
   selectedRecordsTitle: 'Выбранные записи',
   recordsSelected: (count: number) => {
@@ -17,4 +17,4 @@ const translation: VueSelectTranslation = {
   },
 }
 
-export default translation
+export default i18n

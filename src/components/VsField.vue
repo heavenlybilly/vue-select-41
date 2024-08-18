@@ -2,7 +2,7 @@
 import { PropType, computed, inject } from 'vue'
 import chevronDownIcon from '@/assets/icons/chevron-down.svg'
 import crossIcon from '@/assets/icons/cross.svg'
-import { VueSelectTranslation, VueSelectValue } from '@/types'
+import { VueSelectI18n, VueSelectValue } from '@/types'
 
 const props = defineProps({
   value: {
@@ -21,8 +21,8 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  translation: {
-    type: Object as PropType<VueSelectTranslation>,
+  i18n: {
+    type: Object as PropType<VueSelectI18n>,
     required: true,
   },
 })
@@ -51,7 +51,7 @@ const hasValue = computed(() => {
 
 const selectedRecordsTitle = computed(() => {
   if (Array.isArray(props.value)) {
-    return props.translation.recordsSelected(props.value.length)
+    return props.i18n.recordsSelected(props.value.length)
   }
 })
 
@@ -65,10 +65,10 @@ const displayedPlaceholder = computed(() => {
   }
 
   if (Array.isArray(props.value)) {
-    return props.translation.placeholder.multiple
+    return props.i18n.placeholder.multiple
   }
 
-  return props.translation.placeholder.single
+  return props.i18n.placeholder.single
 })
 
 const handleClick = () => {

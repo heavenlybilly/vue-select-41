@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { PropType } from 'vue'
-import { VueSelectTranslation, VueSelectValueItem } from '@/types'
+import { VueSelectI18n, VueSelectValueItem } from '@/types'
 
 const props = defineProps({
   selectedOptions: {
     type: Array as PropType<VueSelectValueItem[]>,
     required: true,
   },
-  translation: {
-    type: Object as PropType<VueSelectTranslation>,
+  i18n: {
+    type: Object as PropType<VueSelectI18n>,
     required: true,
   },
 })
@@ -22,7 +22,7 @@ const handleDeleteItem = (value: String) => {
 
 <template>
   <div v-if="selectedOptions.length">
-    <div class="vs-dropdown-selected-options-title">{{ props.translation.selectedRecordsTitle }}:</div>
+    <div class="vs-dropdown-selected-options-title">{{ props.i18n.selectedRecordsTitle }}:</div>
 
     <!-- todo: add slot -->
     <div

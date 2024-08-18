@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { PropType, Ref, computed, onMounted, ref } from 'vue'
-import { VueSelectTranslation } from '@/types'
+import { VueSelectI18n } from '@/types'
 
 const props = defineProps({
   value: {
     type: String as PropType<String | null>,
     required: false,
   },
-  translation: {
-    type: Object as PropType<VueSelectTranslation>,
+  i18n: {
+    type: Object as PropType<VueSelectI18n>,
     required: true,
   },
 })
@@ -18,7 +18,7 @@ const emits = defineEmits(['input'])
 const searchInputElement: Ref<HTMLElement | null> = ref(null)
 
 const searchPlaceholder = computed(() => {
-  return props.translation.placeholder.search
+  return props.i18n.placeholder.search
 })
 
 const handleInput = (e: Event) => {

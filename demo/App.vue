@@ -1,5 +1,4 @@
 <script lang="ts">
-import VueSelect from '../src/VueSelect.vue'
 import { defineComponent } from 'vue'
 import '../src/style/index.scss'
 import Switcher from './components/Switcher.vue'
@@ -7,7 +6,7 @@ import SelectWrapper from './components/SelectWrapper.vue'
 
 export default defineComponent({
   name: 'App',
-  components: { SelectWrapper, Switcher, VueSelect },
+  components: { SelectWrapper, Switcher },
 })
 </script>
 

@@ -4,15 +4,16 @@ import VsLabel from '@/components/VsLabel.vue'
 import VsOption from '@/components/VsOption.vue'
 import VsSearchInput from '@/components/VsSearchInput.vue'
 import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
-import { PropType, Ref, computed, defineComponent, ref, useSlots, watch, provide } from 'vue'
-import { VueSelectLocale, VueSelectOption, VueSelectRemoteFunction, VueSelectValue } from '@/types'
+import { Ref, computed, defineComponent, ref, useSlots, watch } from 'vue'
+import props from '@/props'
+import { VueSelectOption } from '@/types'
 import { useInput } from '@/hooks/input/useInput'
 import { useFocus } from '@/hooks/useFocus'
+import useI18n from '@/hooks/useI18n'
 import { useNativeSelect } from '@/hooks/useNativeSelect'
 import { useRemote } from '@/hooks/useRemote'
 import { useWarnings } from '@/hooks/useWarnings'
 import debounce from '@/helpers/debounce'
-import useLocale from '@/hooks/useLocale'
 
 export default defineComponent({
   name: 'VueSelect',
@@ -23,82 +24,22 @@ export default defineComponent({
     VsSearchInput,
     VsSelectedOptions,
   },
-  props: {
-    closeOnSelect: {
-      type: Boolean,
-      default: true,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    label: {
-      type: String,
-      required: false,
-    },
-    locale: {
-      type: String as PropType<VueSelectLocale>,
-      default: 'en',
-    },
-    multiple: {
-      type: Boolean,
-      default: false,
-    },
-    name: {
-      type: String,
-      required: false,
-    },
-    options: {
-      type: Array as PropType<VueSelectOption[]>,
-      default: () => [],
-    },
-    placeholder: {
-      type: String,
-      required: false,
-    },
-    remote: {
-      type: Boolean,
-      default: false,
-    },
-    remoteFunction: {
-      type: Function as PropType<VueSelectRemoteFunction>,
-      required: false,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    searchable: {
-      type: Boolean,
-      default: true,
-    },
-    selectedDisplayLimit: {
-      type: Number,
-      default: 3,
-    },
-    showSelected: {
-      type: Boolean,
-      default: true,
-    },
-    value: {
-      type: [Object, Array] as PropType<VueSelectValue>,
-      required: false,
-    },
-  },
+  props,
   emits: ['input', 'dropdown:opened', 'dropdown:closed'],
   setup(props, { emit }) {
+    const slots = useSlots()
+
     const nativeElement: Ref<HTMLSelectElement | null> = ref(null)
     const controlElement: Ref<HTMLElement | null> = ref(null)
     const dropdownElement: Ref<HTMLElement | null> = ref(null)
 
     useWarnings(props)
 
-    const slots = useSlots()
     const { focus, setFocus } = useFocus(dropdownElement, controlElement)
     const { search, remoteOptions, fetchOptions } = useRemote()
     const { selectOption, deleteItem } = useInput(props.multiple)
     const { syncValues } = useNativeSelect()
-    const { getTranslation } = useLocale()
+    const { i18n } = useI18n(computed(() => props.locale))
 
     const searchedOptions = computed(() => {
       if (props.remote) {
@@ -142,10 +83,6 @@ export default defineComponent({
       'vs-dropdown--no-search': !props.searchable,
       'vs-dropdown--no-selected': !selectedOptions.value.length,
     }))
-
-    const translation = computed(() => {
-      return getTranslation(props.locale)
-    })
 
     const handleFocusChange = () => {
       if (!props.disabled) {
@@ -221,7 +158,7 @@ export default defineComponent({
       selectedOptions,
       fieldWrapperClasses,
       dropdownClasses,
-      translation,
+      i18n,
       handleFocusChange,
       handleSelect,
       handleDeleteItem,
@@ -252,14 +189,14 @@ export default defineComponent({
         :selected-display-limit="selectedDisplayLimit"
         :focus="focus"
         :class="fieldWrapperClasses"
-        :translation="translation"
+        :i18n="i18n"
         @click="handleFocusChange"
         @delete-item="handleDeleteItem"
       />
     </div>
 
     <div ref="dropdownElement" class="vs-dropdown" :class="dropdownClasses">
-      <vs-search-input v-if="searchable" v-model="search" :translation="translation" />
+      <vs-search-input v-if="searchable" v-model="search" :i18n="i18n" />
 
       <div
         v-if="displayedOptions.length || selectedOptions.length"
@@ -268,7 +205,7 @@ export default defineComponent({
         <vs-selected-options
           v-if="multiple && showSelected"
           :selected-options="selectedOptions"
-          :translation="translation"
+          :i18n="i18n"
           @delete-item="handleDeleteItem"
         />
 
@@ -295,7 +232,7 @@ export default defineComponent({
 
       <template v-if="!displayedOptions.length">
         <slot v-if="slots.noOptions" name="noOptions"></slot>
-        <div v-else class="vs-dropdown-plug">{{ translation.noResults }}</div>
+        <div v-else class="vs-dropdown-plug">{{ i18n.noResults }}</div>
       </template>
     </div>
   </div>

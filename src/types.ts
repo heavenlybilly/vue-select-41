@@ -37,7 +37,7 @@ export interface VueSelectProps {
 }
 
 export type VueSelectLocale = 'en' | 'ru' | 'de' | 'fr'
-export type VueSelectTranslation = {
+export type VueSelectI18n = {
   noResults: string,
   selectedRecordsTitle: string,
   recordsSelected: (count: number) => string,
