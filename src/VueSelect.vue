@@ -8,6 +8,7 @@ import VsOption from '@/components/VsOption.vue'
 import VsSearchInput from '@/components/VsSearchInput.vue'
 import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
 import { useInput } from '@/hooks/input/useInput'
+import useClassObjects from '@/hooks/useClassObjects'
 import { useFocus } from '@/hooks/useFocus'
 import useI18n from '@/hooks/useI18n'
 import { useNativeSelect } from '@/hooks/useNativeSelect'
@@ -31,7 +32,8 @@ export default defineComponent({
     const dropdownRef: Ref<HTMLElement | null> = ref(null)
 
     const slots = useSlots()
-    const { locale, multiple, remote, searchable, options, value, remoteFunction } = toRefs(props)
+    const { locale, multiple, disabled, remote, searchable, options, value, remoteFunction } =
+      toRefs(props)
 
     // init warnings
     useWarnings(props)
@@ -59,15 +61,14 @@ export default defineComponent({
         remoteFunction,
       })
 
-    const fieldWrapperClasses = computed(() => ({
-      'vs-field-wrapper--disabled': props.disabled,
-    }))
-
-    const dropdownClasses = computed(() => ({
-      'vs-dropdown--visible': focus.value,
-      'vs-dropdown--no-search': !props.searchable,
-      'vs-dropdown--no-selected': !selectedOptions.value.length,
-    }))
+    // init class objects
+    const { fieldWrapperClasses, dropdownClasses } = useClassObjects({
+      focus,
+      disabled,
+      searchable,
+      value,
+      selectedOptions,
+    })
 
     const handleFocusChange = () => {
       if (!props.disabled) {
