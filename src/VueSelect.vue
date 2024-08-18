@@ -123,7 +123,10 @@ export default defineComponent({
             'input',
             [props.value].filter((item) => !!item),
           )
-        } else {
+          return
+        }
+
+        if (Array.isArray(props.value)) {
           emit('input', props.value[0] ?? null)
         }
       },

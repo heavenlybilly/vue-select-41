@@ -1,4 +1,4 @@
-import { type Ref, computed, watch, watchEffect } from 'vue'
+import { type Ref, computed, watch } from 'vue'
 import { VueSelectOption, VueSelectRemoteFunction, VueSelectValue } from '@/types'
 import debounce from '@/helpers/debounce'
 import { useRemote } from '@/hooks/useRemote'
@@ -74,6 +74,13 @@ export default function useOptions(params: {
     () => params.remoteFunction.value,
     () => {
       debouncedFetchOptions()
+    },
+  )
+
+  watch(
+    () => params.searchable.value,
+    () => {
+      setSearch(null)
     },
   )
 

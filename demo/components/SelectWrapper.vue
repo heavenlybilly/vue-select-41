@@ -129,7 +129,7 @@ const handleSelect = (e: Event, param: string) => {
       </button>
     </div>
 
-    <div class="logs">
+    <div class="logs" @click.stop>
       <div v-for="param in paramsKeys" :key="param" class="logs-item">
         <div class="logs-item--label">{{ param }}:</div>
         <div v-if="params[param].type !== 'Select'" class="logs-item--value">
