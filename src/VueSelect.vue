@@ -1,8 +1,7 @@
 <script lang="ts">
-import { Ref, computed, defineComponent, provide, ref, useSlots, watch } from 'vue'
+import { Ref, computed, defineComponent, provide, ref, toRefs, useSlots, watch } from 'vue'
 import props from '@/props'
 import { VueSelectOption } from '@/types'
-import debounce from '@/helpers/debounce'
 import VsField from '@/components/VsField.vue'
 import VsLabel from '@/components/VsLabel.vue'
 import VsOption from '@/components/VsOption.vue'
@@ -12,7 +11,7 @@ import { useInput } from '@/hooks/input/useInput'
 import { useFocus } from '@/hooks/useFocus'
 import useI18n from '@/hooks/useI18n'
 import { useNativeSelect } from '@/hooks/useNativeSelect'
-import { useRemote } from '@/hooks/useRemote'
+import useOptions from '@/hooks/useOptions'
 import { useWarnings } from '@/hooks/useWarnings'
 
 export default defineComponent({
@@ -28,53 +27,35 @@ export default defineComponent({
   emits: ['input', 'dropdown:opened', 'dropdown:closed'],
   setup(props, { emit }) {
     const slots = useSlots()
+    const { locale, multiple, remote, searchable, options, value, remoteFunction } = toRefs(props)
 
+    // init warnings
+    useWarnings(props)
+
+    // init focus and native select
     const nativeRef: Ref<HTMLSelectElement | null> = ref(null)
     const controlRef: Ref<HTMLElement | null> = ref(null)
     const dropdownRef: Ref<HTMLElement | null> = ref(null)
 
-    useWarnings(props)
-
-    const { focus, setFocus } = useFocus(dropdownRef, controlRef)
-    const { search, remoteOptions, fetchOptions } = useRemote()
-    const { selectOption, deleteItem } = useInput(props.multiple)
     const { syncValues } = useNativeSelect()
-    const { i18n } = useI18n(computed(() => props.locale))
+    const { focus, setFocus } = useFocus(dropdownRef, controlRef)
 
+    // init locale
+    const { i18n } = useI18n(locale)
     provide('i18n', i18n)
 
-    const searchedOptions = computed(() => {
-      if (props.remote) {
-        return remoteOptions.value
-      }
+    // init input
+    const { selectOption, deleteItem } = useInput(multiple)
 
-      if (!props.searchable) {
-        return props.options
-      }
-
-      return props.options.filter((item) => {
-        return item.label.toLowerCase().includes(search.value?.toLowerCase() ?? '')
+    // init options
+    const { search, searchedOptions, displayedOptions, selectedOptions, reloadOptions } =
+      useOptions({
+        remote,
+        searchable,
+        options,
+        value,
+        remoteFunction,
       })
-    })
-
-    const displayedOptions = computed(() => {
-      const selectedValues = Array.isArray(props.value)
-        ? props.value.map((item) => item.value)
-        : [props.value?.value].filter(Boolean)
-
-      return searchedOptions.value.map((option) => ({
-        ...option,
-        selected: selectedValues.includes(option.value),
-      }))
-    })
-
-    const selectedOptions = computed(() => {
-      if (!Array.isArray(props.value)) {
-        return props.value ? [props.value] : []
-      }
-
-      return props.value
-    })
 
     const fieldWrapperClasses = computed(() => ({
       'vs-field-wrapper--disabled': props.disabled,
@@ -115,13 +96,12 @@ export default defineComponent({
     watch(
       () => focus.value,
       async (newValue) => {
-        if (!newValue) {
+        if (newValue) {
           search.value = null
-          remoteOptions.value = []
         }
 
         if (newValue && props.remote && props.remoteFunction) {
-          remoteOptions.value = await fetchOptions(props.remoteFunction, search.value)
+          await reloadOptions()
         }
 
         if (newValue) {
@@ -133,15 +113,6 @@ export default defineComponent({
     )
 
     watch(
-      () => search.value,
-      debounce(async (value) => {
-        if (props.remote && props.remoteFunction) {
-          remoteOptions.value = await fetchOptions(props.remoteFunction, value)
-        }
-      }, 200),
-    )
-
-    watch(
       () => props.value,
       (newValue) => {
         if (nativeRef.value) {
@@ -150,11 +121,27 @@ export default defineComponent({
       },
     )
 
+    watch(
+      () => props.multiple,
+      (newValue) => {
+        if (newValue) {
+          emit(
+            'input',
+            [props.value].filter((item) => !!item),
+          )
+        } else {
+          emit('input', props.value[0] ?? null)
+        }
+      },
+    )
+
     return {
+      slots,
       nativeRef,
       controlRef,
       dropdownRef,
       focus,
+      search,
       searchedOptions,
       displayedOptions,
       selectedOptions,
@@ -164,8 +151,6 @@ export default defineComponent({
       handleFocusChange,
       handleSelect,
       handleDeleteItem,
-      slots,
-      search,
     }
   },
 })

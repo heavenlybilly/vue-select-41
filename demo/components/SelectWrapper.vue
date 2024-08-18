@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import VueSelect from '../../src/VueSelect.vue'
-import Switcher from './Switcher.vue'
 import { computed, ref } from 'vue'
+import VueSelect from '../../src/VueSelect.vue'
 import { options } from '../conf/options'
+import Switcher from './Switcher.vue'
 
 const props = defineProps({
-  multiple: {
+  initialMultiple: {
     type: Boolean,
     required: true,
   },
@@ -32,19 +32,23 @@ const params = ref({
   },
   label: {
     value: props.title,
-    type: String
+    type: String,
   },
   locale: {
     value: 'ru',
-    type: String
+    type: String,
+  },
+  multiple: {
+    value: props.initialMultiple,
+    type: Boolean,
   },
   name: {
     value: null,
-    type: String
+    type: String,
   },
   placeholder: {
     value: null,
-    type: String
+    type: String,
   },
   remote: {
     value: props.initialRemote,
@@ -60,14 +64,14 @@ const params = ref({
   },
   selectedDisplayLimit: {
     value: 3,
-    type: Number
+    type: Number,
   },
   showSelected: {
     value: true,
     type: Boolean,
   },
   value: {
-    value: props.multiple ? [] : null,
+    value: props.initialMultiple ? [] : null,
     type: [String, Array],
   },
 })
@@ -77,18 +81,16 @@ const paramsKeys = computed(() => {
 })
 
 const fetchOptions = async (search?: string | null) => {
-  const response = await fetch('https://mocki.io/v1/0d4cd626-5b76-41c8-a81e-3080ef904f60')
-  const data: { options: { id: number; label: string }[] } = await response.json()
+  const response = await fetch('https://mocki.io/v1/a42a5149-62c4-425c-95a0-ec7b43c29304')
+  const items: { id: number; label: string }[] = await response.json()
 
-  const items = data.options
-  return items
-    .filter((item) => {
-      if (!search) {
-        return true
-      }
+  return items.filter((item) => {
+    if (!search) {
+      return true
+    }
 
-      return item.label.toLowerCase().includes(search.toLowerCase())
-    })
+    return item.label.toLowerCase().includes(search.toLowerCase())
+  })
 }
 </script>
 
@@ -97,7 +99,7 @@ const fetchOptions = async (search?: string | null) => {
     <div class="block-title">{{ props.title }}</div>
 
     <div class="actions">
-      <button @click="() => active = !active">
+      <button @click="() => (active = !active)">
         {{ active ? 'active' : 'not active' }}
       </button>
     </div>
@@ -113,7 +115,12 @@ const fetchOptions = async (search?: string | null) => {
           v-model="params[param].value"
         />
 
-        <input v-if="[String, Number].includes(params[param].type)" v-model="params[param].value" class="input" type="text" />
+        <input
+          v-if="[String, Number].includes(params[param].type)"
+          v-model="params[param].value"
+          class="input"
+          type="text"
+        />
       </div>
     </div>
 
@@ -124,7 +131,7 @@ const fetchOptions = async (search?: string | null) => {
       :disabled="params.disabled.value"
       :label="params.label.value"
       :locale="params.locale.value"
-      :multiple="props.multiple"
+      :multiple="params.multiple.value"
       :name="params.name.value"
       :options="options"
       :placeholder="params.placeholder.value"
