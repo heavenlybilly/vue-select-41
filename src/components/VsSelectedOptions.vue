@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType } from 'vue'
+import { inject, PropType, Ref } from 'vue'
 import { VueSelectI18n, VueSelectValueItem } from '@/types'
 
 const props = defineProps({
@@ -7,13 +7,11 @@ const props = defineProps({
     type: Array as PropType<VueSelectValueItem[]>,
     required: true,
   },
-  i18n: {
-    type: Object as PropType<VueSelectI18n>,
-    required: true,
-  },
 })
 
 const emits = defineEmits(['delete-item'])
+
+const i18n = inject('i18n') as Ref<VueSelectI18n>
 
 const handleDeleteItem = (value: String) => {
   emits('delete-item', value)
@@ -22,7 +20,7 @@ const handleDeleteItem = (value: String) => {
 
 <template>
   <div v-if="selectedOptions.length">
-    <div class="vs-dropdown-selected-options-title">{{ props.i18n.selectedRecordsTitle }}:</div>
+    <div class="vs-dropdown-selected-options-title">{{ i18n.selectedRecordsTitle }}:</div>
 
     <!-- todo: add slot -->
     <div

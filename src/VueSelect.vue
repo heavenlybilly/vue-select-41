@@ -4,7 +4,7 @@ import VsLabel from '@/components/VsLabel.vue'
 import VsOption from '@/components/VsOption.vue'
 import VsSearchInput from '@/components/VsSearchInput.vue'
 import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
-import { Ref, computed, defineComponent, ref, useSlots, watch } from 'vue'
+import { Ref, computed, defineComponent, ref, useSlots, watch, provide } from 'vue'
 import props from '@/props'
 import { VueSelectOption } from '@/types'
 import { useInput } from '@/hooks/input/useInput'
@@ -40,6 +40,8 @@ export default defineComponent({
     const { selectOption, deleteItem } = useInput(props.multiple)
     const { syncValues } = useNativeSelect()
     const { i18n } = useI18n(computed(() => props.locale))
+
+    provide('i18n', i18n)
 
     const searchedOptions = computed(() => {
       if (props.remote) {
@@ -189,14 +191,13 @@ export default defineComponent({
         :selected-display-limit="selectedDisplayLimit"
         :focus="focus"
         :class="fieldWrapperClasses"
-        :i18n="i18n"
         @click="handleFocusChange"
         @delete-item="handleDeleteItem"
       />
     </div>
 
     <div ref="dropdownElement" class="vs-dropdown" :class="dropdownClasses">
-      <vs-search-input v-if="searchable" v-model="search" :i18n="i18n" />
+      <vs-search-input v-if="searchable" v-model="search" />
 
       <div
         v-if="displayedOptions.length || selectedOptions.length"
@@ -205,7 +206,6 @@ export default defineComponent({
         <vs-selected-options
           v-if="multiple && showSelected"
           :selected-options="selectedOptions"
-          :i18n="i18n"
           @delete-item="handleDeleteItem"
         />
 

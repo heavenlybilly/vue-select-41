@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, computed, inject } from 'vue'
+import { PropType, computed, inject, Ref } from 'vue'
 import chevronDownIcon from '@/assets/icons/chevron-down.svg'
 import crossIcon from '@/assets/icons/cross.svg'
 import { VueSelectI18n, VueSelectValue } from '@/types'
@@ -21,11 +21,9 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  i18n: {
-    type: Object as PropType<VueSelectI18n>,
-    required: true,
-  },
 })
+
+const i18n = inject('i18n') as Ref<VueSelectI18n>
 
 const emits = defineEmits(['click', 'delete-item'])
 
@@ -51,7 +49,7 @@ const hasValue = computed(() => {
 
 const selectedRecordsTitle = computed(() => {
   if (Array.isArray(props.value)) {
-    return props.i18n.recordsSelected(props.value.length)
+    return i18n.value.recordsSelected(props.value.length)
   }
 })
 
@@ -65,10 +63,10 @@ const displayedPlaceholder = computed(() => {
   }
 
   if (Array.isArray(props.value)) {
-    return props.i18n.placeholder.multiple
+    return i18n.value.placeholder.multiple
   }
 
-  return props.i18n.placeholder.single
+  return i18n.value.placeholder.single
 })
 
 const handleClick = () => {

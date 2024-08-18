@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, Ref, computed, onMounted, ref } from 'vue'
+import { PropType, Ref, computed, inject, onMounted, ref } from 'vue'
 import { VueSelectI18n } from '@/types'
 
 const props = defineProps({
@@ -7,18 +7,16 @@ const props = defineProps({
     type: String as PropType<String | null>,
     required: false,
   },
-  i18n: {
-    type: Object as PropType<VueSelectI18n>,
-    required: true,
-  },
 })
 
 const emits = defineEmits(['input'])
 
+const i18n = inject('i18n') as Ref<VueSelectI18n>
+
 const searchInputElement: Ref<HTMLElement | null> = ref(null)
 
 const searchPlaceholder = computed(() => {
-  return props.i18n.placeholder.search
+  return i18n.value.placeholder.search
 })
 
 const handleInput = (e: Event) => {
