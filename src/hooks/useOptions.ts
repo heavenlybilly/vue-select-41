@@ -1,4 +1,4 @@
-import { type Ref, computed, watchEffect } from 'vue'
+import { type Ref, computed, watch, watchEffect } from 'vue'
 import { VueSelectOption, VueSelectRemoteFunction, VueSelectValue } from '@/types'
 import debounce from '@/helpers/debounce'
 import { useRemote } from '@/hooks/useRemote'
@@ -6,6 +6,7 @@ import { useRemote } from '@/hooks/useRemote'
 export default function useOptions(params: {
   remote: Ref<boolean>
   searchable: Ref<boolean>
+  focus: Ref<boolean>
   options: Ref<VueSelectOption[]>
   value: Ref<VueSelectValue | undefined>
   remoteFunction: Ref<VueSelectRemoteFunction | undefined>
@@ -45,18 +46,35 @@ export default function useOptions(params: {
     return params.value.value
   })
 
-  const reloadOptions = async () => {
-    if (params.remote.value && params.remoteFunction.value) {
-      remoteOptions.value = await fetchOptions(params.remoteFunction.value, search.value)
-    }
+  const setSearch = (value: string | null) => {
+    search.value = value
   }
 
-  watchEffect(
-    debounce(async () => {
-      if (params.remote.value && params.remoteFunction.value) {
-        remoteOptions.value = await fetchOptions(params.remoteFunction.value, search.value)
-      }
-    }, 200),
+  const debouncedFetchOptions = debounce(async () => {
+    if (params.focus.value && params.remote.value && params.remoteFunction.value) {
+      remoteOptions.value = await fetchOptions(params.remoteFunction.value, search.value)
+    }
+  }, 200)
+
+  watch(
+    () => search.value,
+    () => {
+      debouncedFetchOptions()
+    },
+  )
+
+  watch(
+    () => params.focus.value,
+    () => {
+      debouncedFetchOptions()
+    },
+  )
+
+  watch(
+    () => params.remoteFunction.value,
+    () => {
+      debouncedFetchOptions()
+    },
   )
 
   return {
@@ -64,6 +82,6 @@ export default function useOptions(params: {
     searchedOptions,
     displayedOptions,
     selectedOptions,
-    reloadOptions,
+    setSearch,
   }
 }

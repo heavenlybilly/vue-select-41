@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Ref, computed, defineComponent, provide, ref, toRefs, useSlots, watch } from 'vue'
+import { Ref, defineComponent, provide, ref, toRefs, useSlots, watch } from 'vue'
 import props from '@/props'
 import { VueSelectOption } from '@/types'
 import VsField from '@/components/VsField.vue'
@@ -52,14 +52,14 @@ export default defineComponent({
     const { selectOption, deleteItem } = useInput(multiple)
 
     // init options
-    const { search, searchedOptions, displayedOptions, selectedOptions, reloadOptions } =
-      useOptions({
-        remote,
-        searchable,
-        options,
-        value,
-        remoteFunction,
-      })
+    const { search, searchedOptions, displayedOptions, selectedOptions, setSearch } = useOptions({
+      remote,
+      searchable,
+      focus,
+      options,
+      value,
+      remoteFunction,
+    })
 
     // init class objects
     const { fieldWrapperClasses, dropdownClasses } = useClassObjects({
@@ -74,6 +74,10 @@ export default defineComponent({
       if (!props.disabled) {
         setFocus(!focus.value)
       }
+    }
+
+    const handleSearchInput = (value: string | null) => {
+      setSearch(value)
     }
 
     const handleSelect = (option: VueSelectOption) => {
@@ -100,11 +104,7 @@ export default defineComponent({
       () => focus.value,
       async (newValue) => {
         if (newValue) {
-          search.value = null
-        }
-
-        if (newValue && props.remote && props.remoteFunction) {
-          await reloadOptions()
+          setSearch(null)
         }
 
         if (newValue) {
@@ -143,6 +143,7 @@ export default defineComponent({
       dropdownClasses,
       i18n,
       handleFocusChange,
+      handleSearchInput,
       handleSelect,
       handleDeleteItem,
     }
@@ -176,7 +177,7 @@ export default defineComponent({
     </div>
 
     <div ref="dropdownRef" class="vs-dropdown" :class="dropdownClasses">
-      <vs-search-input v-if="searchable" v-model="search" />
+      <vs-search-input v-if="searchable" :value="search" @input="handleSearchInput" />
 
       <div
         v-if="displayedOptions.length || selectedOptions.length"
