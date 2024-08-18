@@ -11,7 +11,7 @@ const meta: Meta<typeof VueSelect> = {
   component: VueSelect,
   argTypes: {
     locale: {
-      type: 'select',
+      control: 'select',
       options: ['en', 'ru', 'de', 'fr'],
     },
     name: {
@@ -21,7 +21,7 @@ const meta: Meta<typeof VueSelect> = {
       type: 'string',
     },
     options: {
-      type: 'select',
+      control: 'select',
       options: ['empty', 'countries', 'heroes'],
       defaultValue: 'countries',
       mapping: {
@@ -31,7 +31,7 @@ const meta: Meta<typeof VueSelect> = {
       },
     },
     remoteFunction: {
-      type: 'select',
+      control: 'select',
       options: ['empty', 'countries', 'heroes'],
       defaultValue: 'countries',
       mapping: {
@@ -65,7 +65,7 @@ export const StaticSingle: Story = {
     props: Object.keys(argTypes),
     data() {
       return {
-        value: null,
+        value: null as VueSelectValue,
       }
     },
     methods: {

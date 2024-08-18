@@ -9,7 +9,6 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
     "test": "jest",
     "test:watch": "jest --watch-all",
@@ -37,8 +36,6 @@
     "jest-environment-jsdom": "^29.7.0",
     "node-sass": "^9.0.0",
     "prettier": "^3.3.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "sass": "^1.39.0",
     "storybook": "^7.6.20",
     "ts-jest": "^29.2.4",

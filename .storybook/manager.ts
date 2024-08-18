@@ -2,5 +2,5 @@ import { addons } from '@storybook/manager-api'
 
 addons.setConfig({
   panelPosition: 'right',
-  rightPanelWidth: 800,
+  rightPanelWidth: 400,
 })
