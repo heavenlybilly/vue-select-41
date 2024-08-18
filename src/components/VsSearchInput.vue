@@ -13,7 +13,7 @@ const emits = defineEmits(['input'])
 
 const i18n = inject('i18n') as Ref<VueSelectI18n>
 
-const searchInputElement: Ref<HTMLElement | null> = ref(null)
+const inputRef: Ref<HTMLElement | null> = ref(null)
 
 const searchPlaceholder = computed(() => {
   return i18n.value.placeholder.search
@@ -25,8 +25,8 @@ const handleInput = (e: Event) => {
 }
 
 onMounted(() => {
-  if (searchInputElement.value) {
-    searchInputElement.value.focus()
+  if (inputRef.value) {
+    inputRef.value.focus()
   }
 })
 </script>
@@ -35,7 +35,7 @@ onMounted(() => {
   <div class="vs-search">
     <input
       :value="props.value"
-      ref="searchInputElement"
+      ref="inputRef"
       class="vs-search-input"
       type="text"
       :placeholder="searchPlaceholder"

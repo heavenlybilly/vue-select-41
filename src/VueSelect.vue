@@ -1,19 +1,19 @@
 <script lang="ts">
+import { Ref, computed, defineComponent, provide, ref, useSlots, watch } from 'vue'
+import props from '@/props'
+import { VueSelectOption } from '@/types'
+import debounce from '@/helpers/debounce'
 import VsField from '@/components/VsField.vue'
 import VsLabel from '@/components/VsLabel.vue'
 import VsOption from '@/components/VsOption.vue'
 import VsSearchInput from '@/components/VsSearchInput.vue'
 import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
-import { Ref, computed, defineComponent, ref, useSlots, watch, provide } from 'vue'
-import props from '@/props'
-import { VueSelectOption } from '@/types'
 import { useInput } from '@/hooks/input/useInput'
 import { useFocus } from '@/hooks/useFocus'
 import useI18n from '@/hooks/useI18n'
 import { useNativeSelect } from '@/hooks/useNativeSelect'
 import { useRemote } from '@/hooks/useRemote'
 import { useWarnings } from '@/hooks/useWarnings'
-import debounce from '@/helpers/debounce'
 
 export default defineComponent({
   name: 'VueSelect',
@@ -29,13 +29,13 @@ export default defineComponent({
   setup(props, { emit }) {
     const slots = useSlots()
 
-    const nativeElement: Ref<HTMLSelectElement | null> = ref(null)
-    const controlElement: Ref<HTMLElement | null> = ref(null)
-    const dropdownElement: Ref<HTMLElement | null> = ref(null)
+    const nativeRef: Ref<HTMLSelectElement | null> = ref(null)
+    const controlRef: Ref<HTMLElement | null> = ref(null)
+    const dropdownRef: Ref<HTMLElement | null> = ref(null)
 
     useWarnings(props)
 
-    const { focus, setFocus } = useFocus(dropdownElement, controlElement)
+    const { focus, setFocus } = useFocus(dropdownRef, controlRef)
     const { search, remoteOptions, fetchOptions } = useRemote()
     const { selectOption, deleteItem } = useInput(props.multiple)
     const { syncValues } = useNativeSelect()
@@ -144,16 +144,16 @@ export default defineComponent({
     watch(
       () => props.value,
       (newValue) => {
-        if (nativeElement.value) {
-          syncValues(nativeElement.value, newValue)
+        if (nativeRef.value) {
+          syncValues(nativeRef.value, newValue)
         }
       },
     )
 
     return {
-      nativeElement,
-      controlElement,
-      dropdownElement,
+      nativeRef,
+      controlRef,
+      dropdownRef,
       focus,
       searchedOptions,
       displayedOptions,
@@ -174,14 +174,14 @@ export default defineComponent({
 <template>
   <div class="vs-wrapper">
     <select
-      ref="nativeElement"
+      ref="nativeRef"
       :name="name"
       :multiple="multiple"
       :required="required"
       class="vs-native-element"
     />
 
-    <div ref="controlElement">
+    <div ref="controlRef">
       <vs-label v-if="label" :required="required" @click="handleFocusChange">
         {{ label }}:
       </vs-label>
@@ -196,7 +196,7 @@ export default defineComponent({
       />
     </div>
 
-    <div ref="dropdownElement" class="vs-dropdown" :class="dropdownClasses">
+    <div ref="dropdownRef" class="vs-dropdown" :class="dropdownClasses">
       <vs-search-input v-if="searchable" v-model="search" />
 
       <div
@@ -237,5 +237,3 @@ export default defineComponent({
     </div>
   </div>
 </template>
-
-<style lang="scss"></style>
