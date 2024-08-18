@@ -1,6 +1,10 @@
-import { useInput } from '../../../../src/hooks/input/useInput';
-import { VueSelectMultipleValue, VueSelectOption, VueSelectSingleValue } from '../../../../src/types';
-
+import { ref } from 'vue'
+import { useInput } from '../../../../src/hooks/input/useInput'
+import {
+  VueSelectMultipleValue,
+  VueSelectOption,
+  VueSelectSingleValue,
+} from '../../../../src/types'
 
 const mockHandleInputMultiple = jest.fn()
 jest.mock('@/hooks/input/useMultipleInput', () => ({
@@ -23,7 +27,7 @@ describe('useInput', () => {
   })
 
   it('should call handleInputMultiple when multiple is true', () => {
-    const { selectOption } = useInput(true)
+    const { selectOption } = useInput(ref(true))
     const value = [{ value: '1', label: 'Option 1' }] as VueSelectMultipleValue
     const selectedOption = { value: '2', label: 'Option 2' } as VueSelectOption
 
@@ -34,7 +38,7 @@ describe('useInput', () => {
   })
 
   it('should call handleInputSingle when multiple is false', () => {
-    const { selectOption } = useInput(false)
+    const { selectOption } = useInput(ref(false))
     const value = { value: '1', label: 'Option 1' } as VueSelectSingleValue
     const selectedOption = { value: '2', label: 'Option 2' } as VueSelectOption
 
@@ -45,7 +49,7 @@ describe('useInput', () => {
   })
 
   it('should correctly delete item when deleteItem is called with multiple set to true', () => {
-    const { deleteItem } = useInput(true)
+    const { deleteItem } = useInput(ref(true))
     const value: VueSelectMultipleValue = [
       { value: '1', label: '1' },
       { value: '2', label: '2' },
@@ -58,7 +62,7 @@ describe('useInput', () => {
   })
 
   it('should return undefined when deleteItem is called with multiple set to false', () => {
-    const { deleteItem } = useInput(false)
+    const { deleteItem } = useInput(ref(false))
     const value: VueSelectMultipleValue = [
       { value: '1', label: '1' },
       { value: '2', label: '2' },
