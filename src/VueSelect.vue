@@ -26,18 +26,20 @@ export default defineComponent({
   props,
   emits: ['input', 'dropdown:opened', 'dropdown:closed'],
   setup(props, { emit }) {
+    const nativeRef: Ref<HTMLSelectElement | null> = ref(null)
+    const controlRef: Ref<HTMLElement | null> = ref(null)
+    const dropdownRef: Ref<HTMLElement | null> = ref(null)
+
     const slots = useSlots()
     const { locale, multiple, remote, searchable, options, value, remoteFunction } = toRefs(props)
 
     // init warnings
     useWarnings(props)
 
-    // init focus and native select
-    const nativeRef: Ref<HTMLSelectElement | null> = ref(null)
-    const controlRef: Ref<HTMLElement | null> = ref(null)
-    const dropdownRef: Ref<HTMLElement | null> = ref(null)
+    // init native select
+    useNativeSelect(nativeRef, value)
 
-    const { syncValues } = useNativeSelect()
+    // init focus
     const { focus, setFocus } = useFocus(dropdownRef, controlRef)
 
     // init locale
@@ -108,15 +110,6 @@ export default defineComponent({
           emit('dropdown:opened')
         } else {
           emit('dropdown:closed')
-        }
-      },
-    )
-
-    watch(
-      () => props.value,
-      (newValue) => {
-        if (nativeRef.value) {
-          syncValues(nativeRef.value, newValue)
         }
       },
     )
