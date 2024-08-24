@@ -32,10 +32,9 @@ const meta: Meta<typeof VueSelect> = {
     },
     remoteFunction: {
       control: 'select',
-      options: ['empty', 'countries', 'heroes'],
+      options: ['countries', 'heroes'],
       defaultValue: 'countries',
       mapping: {
-        empty: [],
         countries: remoteCountries,
         heroes: remoteHeroes,
       },

@@ -4,6 +4,7 @@ import props from '@/props'
 import { VueSelectOption } from '@/types'
 import VsField from '@/components/VsField.vue'
 import VsLabel from '@/components/VsLabel.vue'
+import VsNoOptionsPlug from '@/components/VsNoOptionsPlug.vue'
 import VsOption from '@/components/VsOption.vue'
 import VsSearchInput from '@/components/VsSearchInput.vue'
 import VsSelectedOptions from '@/components/VsSelectedOptions.vue'
@@ -18,6 +19,7 @@ import { useWarnings } from '@/hooks/useWarnings'
 export default defineComponent({
   name: 'VueSelect',
   components: {
+    VsNoOptionsPlug,
     VsField,
     VsLabel,
     VsOption,
@@ -132,6 +134,8 @@ export default defineComponent({
       },
     )
 
+    console.log(slots)
+
     return {
       slots,
       nativeRef,
@@ -144,7 +148,6 @@ export default defineComponent({
       selectedOptions,
       fieldWrapperClasses,
       dropdownClasses,
-      i18n,
       handleFocusChange,
       handleSearchInput,
       handleSelect,
@@ -214,8 +217,10 @@ export default defineComponent({
       </div>
 
       <template v-if="!displayedOptions.length">
-        <slot v-if="slots.noOptions" name="noOptions"></slot>
-        <div v-else class="vs-dropdown-plug">{{ i18n.noResults }}</div>
+        <template v-if="slots['no-options']">
+          <slot name="no-options" :search="search"></slot>
+        </template>
+        <vs-no-options-plug v-else :search="search" />
       </template>
     </div>
   </div>

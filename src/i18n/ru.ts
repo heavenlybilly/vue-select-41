@@ -2,7 +2,10 @@ import { VueSelectI18n } from '@/types'
 import pronounce from '@/helpers/pronounce'
 
 const i18n: VueSelectI18n = {
-  noResults: 'Ничего не найдено',
+  noOptions: 'Здесь ничего нет',
+  noResults: (search: string) => {
+    return `По запросу '${search}' ничего не найдено`
+  },
   selectedRecordsTitle: 'Выбранные записи',
   recordsSelected: (count: number) => {
     const selected = pronounce(count, 'Выбрана', 'Выбрано', 'Выбрано')

@@ -1,6 +1,7 @@
-import { type Ref, computed, watch } from 'vue'
+import { type Ref, computed, ref, watch } from 'vue'
 import { VueSelectOption, VueSelectRemoteFunction, VueSelectValue } from '@/types'
 import debounce from '@/helpers/debounce'
+import { errorLog } from '@/helpers/logger'
 import { useRemote } from '@/hooks/useRemote'
 
 export default function useOptions(params: {
@@ -52,7 +53,14 @@ export default function useOptions(params: {
 
   const debouncedFetchOptions = debounce(async () => {
     if (params.focus.value && params.remote.value && params.remoteFunction.value) {
-      remoteOptions.value = await fetchOptions(params.remoteFunction.value, search.value)
+      try {
+        remoteOptions.value = await fetchOptions(params.remoteFunction.value, search.value)
+      } catch (e) {
+        errorLog({
+          module: 'debouncedFetchOptions',
+          message: 'error during fetching options',
+        })
+      }
     }
   }, 200)
 
