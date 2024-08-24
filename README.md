@@ -90,7 +90,7 @@ label: {
 ### `locale`
 The `locale` prop is used to set the interface language of the component, allowing the texts and formatting to be 
 adapted to the desired language. This prop accepts a string value corresponding to the language code.
-Available values: `en`, `ru`, `de` and `fr`.
+Available values: `en`, and `ru`.
 
 ```js
 locale: {
@@ -200,10 +200,6 @@ showSelected: {
 }
 ```
 
-<div style="background-color: #d2feff; border-left: 6px solid #00a6ff; padding: 10px; margin: 10px 0; border-radius: 2px;">
-  <strong>Note:</strong> This prop takes effect only when the select input is in multiple mode
-</div>
-
 ### `value`
 Current selected value(s). Depending on the select type (single/multiple), the value can be an object `{ value: string, label: string }` or an array of such objects. 
 
@@ -242,13 +238,14 @@ This slot is used to display options in the dropdown.
 </template>
 ```
 
-### `no options`
+### `no-options`
 This slot used when there are no options to display.
 
 ```vue
-<template #noOptions>
+<template #no-options="{ search }">
   <div class="custom-class">
-    No results found
+    <div v-if="!search">No options available</div>
+    <div v-else>No results found for '{{ search }}'</div>
   </div>
 </template>
 ```

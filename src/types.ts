@@ -15,35 +15,36 @@ export type VueSelectRemoteFunction = (search: string | null) => Promise<VueSele
 
 export interface VueSelectProps {
   // clearable: boolean;
-  closeOnSelect: boolean;
-  disabled: boolean;
-  label?: string;
-  locale: VueSelectLocale;
+  closeOnSelect: boolean
+  disabled: boolean
+  label?: string
+  locale: VueSelectLocale
   // labelField: string;
-  multiple: boolean;
-  name?: string;
-  options: VueSelectOption[];
-  placeholder?: string;
+  multiple: boolean
+  name?: string
+  options: VueSelectOption[]
+  placeholder?: string
   // perPage: number;
-  remote: boolean;
-  remoteFunction?: (search: string | null) => Promise<VueSelectOption[]>;
-  required: boolean;
-  searchable: boolean;
-  selectedDisplayLimit: number;
-  showSelected: boolean;
+  remote: boolean
+  remoteFunction?: (search: string | null) => Promise<VueSelectOption[]>
+  required: boolean
+  searchable: boolean
+  selectedDisplayLimit: number
+  showSelected: boolean
   // valueField: string;
-  value?: VueSelectValue;
+  value?: VueSelectValue
   // paginate: boolean;
 }
 
-export type VueSelectLocale = 'en' | 'ru' | 'de' | 'fr'
+export type VueSelectLocale = 'en' | 'ru'
 export type VueSelectI18n = {
-  noResults: string,
-  selectedRecordsTitle: string,
-  recordsSelected: (count: number) => string,
+  noOptions: string
+  noResults: (search: string) => string
+  selectedRecordsTitle: string
+  recordsSelected: (count: number) => string
   placeholder: {
-    single: string,
-    multiple: string,
-    search: string,
+    single: string
+    multiple: string
+    search: string
   }
 }
